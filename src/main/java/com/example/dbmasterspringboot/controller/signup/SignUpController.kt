@@ -23,6 +23,10 @@ class SignUpController(
         val dbName = httpServletRequest.getParameter("name")
         val DB_NAME_CHECK_QUERY = "SELECT check_duplication FROM dbmaster_users WHERE dbname = \'$dbName\'"
 
+        System.out.println(dbName);
+        if(dbName == null) {
+            return ResponseDTO("E01 : 파라미터 입력이 잘못 되었거나 입력하지 않았습니다.")
+        }
         return try{
             duplicationResult = jdbcTemplate.queryForObject(DB_NAME_CHECK_QUERY)
             ResponseDTO(duplicationResult.toString())
@@ -38,7 +42,17 @@ class SignUpController(
         val currentTime = LocalDate.now()
         val dbName = httpServletRequest.getParameter("name")
         val password = httpServletRequest.getParameter("pw")
-        
+        System.out.print(dbName)
+        System.out.print(password)
+        if(dbName == null && password == null){
+            return ResponseDTO("name, pw 파라미터가 입력되지 않았거나 값이 없습니다.")
+        }
+        if(dbName == null){
+            return ResponseDTO("name 파라미터가 입력되지 않았거나 값이 없습니다.")
+        }
+        if(password == null){
+            return ResponseDTO("pw 파라미터가 입력되지 않았거나 값이 없습니다.")
+        }
         try {
             val USER_INSERT_TO_MASTER_QUERY =
                     "INSERT INTO dbmaster_users (dbname, pw, latest_visit_date)\n" +
@@ -54,7 +68,7 @@ class SignUpController(
             jdbcTemplate.execute(USER_GRANT_QUERY)
             jdbcTemplate.execute(FLUSH_GRANT_QUERY)
 
-            return ResponseDTO("success")
+            return ResponseDTO("S01")
         } catch (e: Exception) {
             resultStr = e.cause.toString()
             return ResponseDTO(resultStr)

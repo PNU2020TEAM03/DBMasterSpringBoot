@@ -27,7 +27,6 @@ class DataSourceController(
         return try{
             jdbcTemplate.execute(CREATE_DB_QUERY)
             jdbcTemplate.execute(CREATE_USER_QUERY)
-
             "S01"
         }catch (e: Exception){
             e.printStackTrace()
