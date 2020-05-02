@@ -4,8 +4,7 @@ import com.example.dbmasterspringboot.data.dto.ResponseDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.queryForObject
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
 import javax.servlet.http.HttpServletRequest
 
@@ -18,14 +17,17 @@ class SignUpController(
     private var duplicationResult: String? = null
 
     /* TODO 회원가입 시 중복확인에 대한 함수 중복이면 duplicate 리턴, 없으면 null 리턴 */
-    @RequestMapping("/sign-up/check")
-    fun checkDBName(): ResponseDTO {
-        val dbName = httpServletRequest.getParameter("name")
+    @PostMapping("/v1/sign-up/check-name")
+    fun checkDBName(
+            @RequestBody name: Map<String, String>
+    ): ResponseDTO {
+        val dbName: String? = name["name"]
         val DB_NAME_CHECK_QUERY = "SELECT check_duplication FROM dbmaster_users WHERE dbname = \'$dbName\'"
 
-        System.out.println(dbName);
+        println(dbName)
         if(dbName == null) {
-            return ResponseDTO("E01 : 파라미터 입력이 잘못 되었거나 입력하지 않았습니다.")
+            /* 파라미터 입력이 잘못 되었거나 입력하지 않았습니다. */
+            return ResponseDTO("E01")
         }
         return try{
             duplicationResult = jdbcTemplate.queryForObject(DB_NAME_CHECK_QUERY)
@@ -36,22 +38,28 @@ class SignUpController(
         }
     }
 
-    @RequestMapping("/sign-up/request")
-    fun requestSignUp(): ResponseDTO {
+    @PostMapping("/v1/sign-up/request")
+    fun requestSignUp(
+            @RequestBody user: Map<String, String>
+    ): ResponseDTO {
         var resultStr = "failed"
         val currentTime = LocalDate.now()
-        val dbName = httpServletRequest.getParameter("name")
-        val password = httpServletRequest.getParameter("pw")
-        System.out.print(dbName)
-        System.out.print(password)
+        val dbName = user["name"]
+        val password = user["pw"]
+
+        println("$dbName, $password")
+
         if(dbName == null && password == null){
-            return ResponseDTO("name, pw 파라미터가 입력되지 않았거나 값이 없습니다.")
+            /* name, pw 파라미터가 입력되지 않았거나 값이 없습니다. */
+            return ResponseDTO("E01")
         }
         if(dbName == null){
-            return ResponseDTO("name 파라미터가 입력되지 않았거나 값이 없습니다.")
+            /* name 파라미터가 입력되지 않았거나 값이 없습니다. */
+            return ResponseDTO("E02")
         }
         if(password == null){
-            return ResponseDTO("pw 파라미터가 입력되지 않았거나 값이 없습니다.")
+            /* pw 파라미터가 입력되지 않았거나 값이 없습니다. */
+            return ResponseDTO("E03")
         }
         try {
             val USER_INSERT_TO_MASTER_QUERY =

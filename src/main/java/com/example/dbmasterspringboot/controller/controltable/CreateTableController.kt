@@ -1,4 +1,4 @@
-package com.example.dbmasterspringboot.controller.controlTable
+package com.example.dbmasterspringboot.controller.controltable
 
 import com.example.dbmasterspringboot.data.dto.ResponseDTO
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +19,9 @@ class CreateTableController(
         @Autowired val jdbcTemplate: JdbcTemplate,
         @Autowired val httpServletRequest: HttpServletRequest
 ) {
-    @RequestMapping("/table/create")
+
+    /* Table 만드는 함수 */
+    @RequestMapping("/v1/table/create")
     fun createTable(): ResponseDTO {
         var resultStr = "failed"
         val currentTime = LocalDate.now()
@@ -32,20 +34,20 @@ class CreateTableController(
         }
         //fielddInfo = sno int(11) NOT NULL, name char(10) DEFAULT NULL, PRIMARY KEY (sno)
 
-        try {
-            val CREATE_TABLE_QUERY = "CREATE TABLE " + name + "." + tableName + "(" +
-                    fieldInfo + ")default character set utf8 collate utf8_general_ci;"
+        return try {
+            val CREATE_TABLE_QUERY = "CREATE TABLE $name.$tableName ($fieldInfo) default character set utf8 collate utf8_general_ci;"
             println(CREATE_TABLE_QUERY)
             jdbcTemplate.execute(CREATE_TABLE_QUERY)
-            return ResponseDTO("S01")
+            ResponseDTO("S01")
 
         } catch (e: Exception) {
             resultStr = e.cause.toString()
-            return ResponseDTO(resultStr)
+            ResponseDTO(resultStr)
         }
     }
 
-    @RequestMapping("/table/selectAll")
+    /* 사용자 데이터베이스 전체 테이블 목록 가져옴. */
+    @RequestMapping("/v1/table/all-tables")
     fun selectTable(): ResponseDTO {
         //파라미터 받고
         val tableName = httpServletRequest.getParameter("tableName")
@@ -59,7 +61,7 @@ class CreateTableController(
         var url: String? = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true"
         var con: Connection? = null
         var stmt: Statement? = null
-        val SELECT_ALL_FROM_TABLE = "SELECT * FROM " + name + "." + tableName + ";"
+        val SELECT_ALL_FROM_TABLE = "SELECT * FROM $name.$tableName;"
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver")
@@ -104,15 +106,15 @@ class CreateTableController(
         println(name)
         println(insert)
 
-        try {
-            val SELECT_ALL_FROM_TABLE = "INSERT INTO " + name + "." + tableName + " VALUES(" + insert + ");"
+        return try {
+            val SELECT_ALL_FROM_TABLE = "INSERT INTO $name.$tableName VALUES($insert);"
             println(SELECT_ALL_FROM_TABLE)
             jdbcTemplate.execute(SELECT_ALL_FROM_TABLE)
-            return ResponseDTO("S01")
+            ResponseDTO("S01")
 
         } catch (e: SQLException) {
             System.err.print("SQLException : " + e.message)
-            return ResponseDTO(e.toString())
+            ResponseDTO(e.toString())
         }
 
     }
