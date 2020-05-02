@@ -15,41 +15,49 @@ class SignUpController(
         @Autowired val httpServletRequest: HttpServletRequest
 ) {
 
+    private var duplicationResult: String? = null
+
     /* TODO 회원가입 시 중복확인에 대한 함수 중복이면 duplicate 리턴, 없으면 null 리턴 */
     @RequestMapping("/sign-up/check")
     fun checkDBName(): ResponseDTO {
-        var duplicationResult: String
         val dbName = httpServletRequest.getParameter("name")
         val DB_NAME_CHECK_QUERY = "SELECT check_duplication FROM dbmaster_users WHERE dbname = \'$dbName\'"
 
         return try{
             duplicationResult = jdbcTemplate.queryForObject(DB_NAME_CHECK_QUERY)
-            ResponseDTO(duplicationResult)
+            ResponseDTO(duplicationResult.toString())
         } catch (e: Exception) {
             duplicationResult = "available"
-            ResponseDTO(duplicationResult)
+            ResponseDTO(duplicationResult.toString())
         }
     }
 
     @RequestMapping("/sign-up/request")
     fun requestSignUp(): ResponseDTO {
+        var resultStr = "failed"
         val currentTime = LocalDate.now()
         val dbName = httpServletRequest.getParameter("name")
         val password = httpServletRequest.getParameter("pw")
-        val DB_CREATE_QUERY = "CREATE SCHEMA $dbName;"
-        val USER_CREATE_QUERY = "CREATE USER \'$dbName\'@\'%\' IDENTIFIED BY \'$password\';"
-        val USER_INSERT_TO_MASTER_QUERY =
-                "INSERT INTO dbmaster_users (dbname, pw, latest_visit_date)\n" +
-                "VALUES (\'$dbName\', \'$password\', \'$currentTime\');"
+        
+        try {
+            val USER_INSERT_TO_MASTER_QUERY =
+                    "INSERT INTO dbmaster_users (dbname, pw, latest_visit_date)\n" +
+                            "VALUES (\'$dbName\', \'$password\', \'$currentTime\');"
+            val USER_CREATE_QUERY = "CREATE USER $dbName@\'%\' IDENTIFIED BY \'$password\';"
+            val DB_CREATE_QUERY = "CREATE SCHEMA $dbName;"
+            val USER_GRANT_QUERY = "GRANT ALL PRIVILEGES ON $dbName.* TO $dbName@\'%\';"
+            val FLUSH_GRANT_QUERY = "FLUSH PRIVILEGES"
 
-        return try {
-            jdbcTemplate.execute(DB_CREATE_QUERY)
-            jdbcTemplate.execute(USER_CREATE_QUERY)
             jdbcTemplate.execute(USER_INSERT_TO_MASTER_QUERY)
+            jdbcTemplate.execute(USER_CREATE_QUERY)
+            jdbcTemplate.execute(DB_CREATE_QUERY)
+            jdbcTemplate.execute(USER_GRANT_QUERY)
+            jdbcTemplate.execute(FLUSH_GRANT_QUERY)
 
-            ResponseDTO("success")
+            return ResponseDTO("success")
         } catch (e: Exception) {
-            ResponseDTO("failed")
+            resultStr = e.cause.toString()
+            return ResponseDTO(resultStr)
         }
     }
 }
