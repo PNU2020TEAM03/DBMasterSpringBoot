@@ -3,7 +3,7 @@ package com.example.dbmasterspringboot;
 import java.sql.*;
 
 public class DBMetaData {
-    String url = "jdbc:mysql://localhost:3306/masterdb?serverTimezone=UTC&useSSL=true";
+    String url = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true";
     String query = "SELECT * FROM masterdb.testtable";
     Connection con = null;
     Statement stmt = null;
@@ -16,7 +16,7 @@ public class DBMetaData {
         }
 
         try {
-            con = DriverManager.getConnection(url, "root", "Helxo116!");
+            con = DriverManager.getConnection(url, "dbmaster", "dbmaster_master");
             System.out.println("Connected to DB ............");
             stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
