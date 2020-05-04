@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 class SignUpController(
-        @Autowired val jdbcTemplate: JdbcTemplate,
-        @Autowired val httpServletRequest: HttpServletRequest
+        @Autowired val jdbcTemplate: JdbcTemplate
 ) {
 
     private var duplicationResult: String? = null
@@ -19,7 +18,7 @@ class SignUpController(
     /* TODO 회원가입 시 중복확인에 대한 함수 중복이면 duplicate 리턴, 없으면 null 리턴 */
     @PostMapping("/v1/sign-up/check-name")
     fun checkDBName(
-            @RequestBody name: Map<String, String>
+            @RequestBody name: HashMap<String, String>
     ): ResponseDTO {
         val dbName: String? = name["name"]
         val DB_NAME_CHECK_QUERY = "SELECT check_duplication FROM dbmaster_users WHERE dbname = \'$dbName\'"
@@ -44,6 +43,7 @@ class SignUpController(
     ): ResponseDTO {
         var resultStr = "failed"
         val currentTime = LocalDate.now()
+
         val dbName = user["name"]
         val password = user["pw"]
 
@@ -62,6 +62,7 @@ class SignUpController(
             return ResponseDTO("E03")
         }
         try {
+            /* master DB에 유저 등록 및 DB 생성 */
             val USER_INSERT_TO_MASTER_QUERY =
                     "INSERT INTO dbmaster_users (dbname, pw, latest_visit_date)\n" +
                             "VALUES (\'$dbName\', \'$password\', \'$currentTime\');"
