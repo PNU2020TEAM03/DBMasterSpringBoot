@@ -5,6 +5,7 @@ import com.example.dbmasterspringboot.data.dto.ResponseDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.queryForObject
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -19,13 +20,14 @@ class ConnectionController(
     fun checkConnectionAvailable(
             @RequestBody user: HashMap<String, String>
     ): ConnectionDTO {
-        var resultId = ""
-        var resultConnection = ""
+        val resultId: String
+        val resultConnection: String
+
         val name = user["name"]
         val pw = user["pw"]
 
         val DB_CONNECTION_ID_CHECK_QUERY =
-                "SELECT \'available_id\'\n " +
+                "SELECT \'available\'\n " +
                         "FROM dbmaster_users\n " +
                         "WHERE dbname = \'$name\';"
 
@@ -37,16 +39,23 @@ class ConnectionController(
         resultId = try {
             jdbcTemplate.queryForObject(DB_CONNECTION_ID_CHECK_QUERY)
         } catch (e: Exception) {
-            "unavailable_id"
+            "unavailable"
         }
 
         resultConnection = try {
             jdbcTemplate.queryForObject(DB_CONNECTION_ID_PW_CHECK_QUERY)
         }   catch (e: Exception) {
-            "unavailable_connection"
+            "unavailable"
         }
 
         return ConnectionDTO(resultId, resultConnection)
+    }
+
+    @GetMapping("/v1/connection/update")
+    fun updateUserInfo(
+            @RequestBody updateInfo: HashMap<String, String>
+    ) {
+        val name = ""
     }
 
 }

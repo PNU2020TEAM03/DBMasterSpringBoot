@@ -3,6 +3,8 @@ package com.example.dbmasterspringboot.controller.controltable
 import com.example.dbmasterspringboot.data.dto.ResponseDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.sql.Connection
