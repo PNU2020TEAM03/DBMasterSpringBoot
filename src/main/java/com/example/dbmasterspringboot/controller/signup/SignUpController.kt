@@ -26,14 +26,14 @@ class SignUpController(
         println(dbName)
         if(dbName == null) {
             /* 파라미터 입력이 잘못 되었거나 입력하지 않았습니다. */
-            return ResponseDTO("E01")
+            return ResponseDTO("E01","","")
         }
         return try{
             duplicationResult = jdbcTemplate.queryForObject(DB_NAME_CHECK_QUERY)
-            ResponseDTO(duplicationResult.toString())
+            ResponseDTO("E01",duplicationResult.toString(),"")
         } catch (e: Exception) {
             duplicationResult = "available"
-            ResponseDTO(duplicationResult.toString())
+            ResponseDTO("S01",duplicationResult.toString(),"")
         }
     }
 
@@ -51,15 +51,15 @@ class SignUpController(
 
         if(dbName == null && password == null){
             /* name, pw 파라미터가 입력되지 않았거나 값이 없습니다. */
-            return ResponseDTO("E01")
+            return ResponseDTO("E01","","")
         }
         if(dbName == null){
             /* name 파라미터가 입력되지 않았거나 값이 없습니다. */
-            return ResponseDTO("E02")
+            return ResponseDTO("E02","","")
         }
         if(password == null){
             /* pw 파라미터가 입력되지 않았거나 값이 없습니다. */
-            return ResponseDTO("E03")
+            return ResponseDTO("E03","","")
         }
         try {
             /* master DB에 유저 등록 및 DB 생성 */
@@ -77,10 +77,10 @@ class SignUpController(
             jdbcTemplate.execute(USER_GRANT_QUERY)
             jdbcTemplate.execute(FLUSH_GRANT_QUERY)
 
-            return ResponseDTO("S01")
+            return ResponseDTO("S01","회원가입에 성공했습니다.","")
         } catch (e: Exception) {
             resultStr = e.cause.toString()
-            return ResponseDTO(resultStr)
+            return ResponseDTO("E01",resultStr,"")
         }
     }
 }
