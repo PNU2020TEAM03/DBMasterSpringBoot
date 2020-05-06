@@ -55,6 +55,8 @@ class ConnectionController(
     fun updateUserInfo(
             @RequestBody updateInfo: HashMap<String, String>
     ) {
+        //최근 방문 날짜랑
+        //방문횟수
         val name = ""
     }
 
