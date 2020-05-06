@@ -93,6 +93,11 @@ class CreateTableController(
         }
     }
 
+//    {
+//        "tableName" : "test1",
+//        "name" : "uuzaza",
+//        "insert" : "8, '테스트'"
+//    }
     @RequestMapping("/v1/table/insert")
     fun insertTable(
             @RequestBody response: HashMap<String, String>
