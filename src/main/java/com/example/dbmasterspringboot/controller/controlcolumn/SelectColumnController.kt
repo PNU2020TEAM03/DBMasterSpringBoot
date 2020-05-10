@@ -70,7 +70,7 @@ class SelectColumnController(
                     }
                 }
             } catch (e: SQLException) {
-                throw RuntimeException(e)
+                return ResponseDTO("E02", e.toString(), null)
             }
             pstmt.close()
             con.close()
