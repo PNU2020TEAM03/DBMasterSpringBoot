@@ -2,6 +2,8 @@ package com.example.dbmasterspringboot.controller.controlcolumn
 
 import com.example.dbmasterspringboot.data.dto.ColumnDTO
 import com.example.dbmasterspringboot.data.dto.ResponseDTO
+import org.json.simple.JSONArray
+import org.json.simple.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.web.bind.annotation.RequestBody
@@ -45,8 +47,7 @@ class SelectColumnController(
 
             val SELECT_ALL_QUERY = "SELECT * FROM $name.$tableName;"
             var pstmt = con.prepareStatement(SELECT_ALL_QUERY)
-            var mapArray : ArrayList<ColumnDTO> = ArrayList()
-
+            var jsonArray = JSONArray()
             try {
                 println("current $tableName is:")
                 con.prepareStatement(
@@ -56,13 +57,15 @@ class SelectColumnController(
                             println("no rows found")
                         } else {
                             while (rs.next()) {
+                                var obj = JSONObject()
                                 for (i in 1 until rs.getMetaData().getColumnCount() + 1) {
-                                    val columnDTO = ColumnDTO(rs.metaData.getColumnName(i),rs.getObject(i))
-                                    mapArray.add(columnDTO)
-//                                    print(" {" + rs.getMetaData().getColumnName(i) + ":" + rs.getObject(i)+ ",}")
-                                }
-//                                println("")
-                            }
+                                    val name = rs.metaData.getColumnName(i)
+                                    val value = rs.getObject(i)
+                                    obj.put(name, value)
+                                    print(obj)
+                                } // 한컬럼 다 넣어짐
+                                jsonArray.add(obj)
+                            }//end of while
                         }
                     }
                 }
@@ -72,7 +75,7 @@ class SelectColumnController(
             pstmt.close()
             con.close()
             println("Disconnected From DB ..........")
-            return ResponseDTO("S01", "", mapArray)
+            return ResponseDTO("S01", "", jsonArray)
 
         } catch (e: SQLException) {
             System.err.print("SQLException : " + e.message)
