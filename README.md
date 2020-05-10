@@ -1,3 +1,9 @@
 # DBMasterSpringBoot
 
-https://documenter.getpostman.com/view/5249380/Szmcaz3f?version=latest#db69b269-bcc0-4e06-84e7-8105c07ad8b9
+
+| **버전** | **날짜**       | **내용** | **작성자** |
+|:------:|:------------:|:------:|:-------:|
+| 1\.0   | 2020\.05\.10 | 추가     | 김태형     |
+|        |              |        |         |
+|        |              |        |         |
+|        |              |        |         |
