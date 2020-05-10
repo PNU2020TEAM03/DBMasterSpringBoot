@@ -28,7 +28,7 @@ Base API : 기밀
 |              | Company_address_detail  |                            | string  | 주소 상세                   |
 |              | owner                   | 필수                       | string  | 사장                        |
 |              | phone                   | 필수                       | string  | 사장폰                     |
-| 결과         | { "code": "S01", }                                                                        |
+| 결과         | { "code": "S01" }                     |                                                   |
 | 에러코드      | E00                     | 서버 syntax 에러(주로 db)                                           |
 |              | E01                     | input error                                                      |
 |              | E02                     | 이미 가입 된 아이디                                                  |
