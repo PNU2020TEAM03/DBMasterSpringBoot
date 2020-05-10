@@ -261,6 +261,87 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     }
 
 
+----
+## 테이블 데이터 전부 불러오기 api
+
+* api 종류 : post
+* 주소 : /v1/column/get-all
+
+*Select * FROM TABLE*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+
+>예시 input
+
+    {
+	"tableName" : "test1",
+	"name" : "uuzaza",
+    }
+
+>response
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": [
+        {
+            "sno": 1,
+            "name": "???"
+        },
+        {
+            "sno": 2,
+            "name": "이번항"
+        },
+        {
+            "sno": 3,
+            "name": "???"
+        },
+        {
+            "sno": 4,
+            "name": "??"
+        },
+        {
+            "sno": 5,
+            "name": "english"
+        },
+        {
+            "sno": 6,
+            "name": "???????"
+        },
+        {
+            "sno": 7,
+            "name": "메ㄸ데ㅐ"
+        },
+        {
+            "sno": 8,
+            "name": "테스트"
+        },
+        {
+            "sno": 9,
+            "name": "테스트2"
+        },
+        {
+            "sno": 10,
+            "name": "테스트3"
+        },
+        {
+            "sno": 12,
+            "name": "테스트3"
+        }
+    ]
+    }
+
+>error
+
+    {
+    "result": "E02",
+    "message": "java.sql.SQLSyntaxErrorException: Table 'uuzaz3a.test1' doesn't exist",
+    "value": null
+    }
+
 
 ----
 ## thanks
