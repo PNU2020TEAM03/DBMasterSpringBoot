@@ -1,100 +1,268 @@
 # DBMasterSpringBoot
+https://markdownlivepreview.com/
+# 디비 마스터 api 문서
 
-use https://tableconvert.com/ to make table
+----
+## 디비 마스터란?
+see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?version=latest#db69b269-bcc0-4e06-84e7-8105c07ad8b9)
 
-| **버전** | **날짜**       | **내용** | **작성자** |
-|:------:|:------------:|:------:|:-------:|
-| 1\.0   | 2020\.05\.10 | 추가     | 김태형     |
-|        |              |        |         |
-|        |              |        |         |
-|        |              |        |         |
+> Markdown is a lightweight markup language, originally created by John Gruber and Aaron Swartz allowing people "to write using an easy-to-read, easy-to-write plain text format, then convert it to structurally valid XHTML (or HTML)".
+
+----
+## postman 으로 테스트하려면
+1. Write markdown text in this textarea.
+2. Click 'HTML Preview' button.
+----
+## changelog
+* 2020.05.10 첫 등록
+
+----
+## 회원가입 api
+
+*유저의 회원가입을 해주는 api*
+
+* api 종류 : post
+* 주소 : /v1/sign-up/request
+
+**input data**
+
+* name : String ( 필수)
+* pw : String (필수)
+
+>response
+
+    {
+    "result": "S01",
+    "message": "회원가입에 성공했습니다.",
+    "value": ""
+    }
+
+>error
+
+    {
+    "result": "E01",
+    "message": "java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'test123' for key 'PRIMARY'",
+    "value": ""
+    }
+
+----
+## 아이디 중복검사 api
+* api 종류 : post
+* 주소 : /v1/sign-up/check-name
+
+*회원가입 전 아이디 중복 검사를 해주는 api*
+
+**input data**
+
+* name : String ( 필수)
+
+>response
+
+    {
+    "result": "S01",
+    "message": "available",
+    "value": ""
+    }
+
+>error
+
+    {
+    "result": "E01",
+    "message": "duplicate",
+    "value": ""
+    }
+----
+## 로그인 api
+
+* api 종류 : post
+* 주소 : /v1/connection/check
+
+*디비 커넥션이 가능한지 확인하는 api*
+
+**input data**
+
+* name : String (필수)
+* pw : String (필수)
+
+>response
+
+    {
+    "idValid": "available",
+    "connectionValid": "available"
+    }
+
+>error
+
+    {
+    "idValid": "unavailable",
+    "connectionValid": "unavailable"
+    }
 
 
 
+----
+## 테이블 생성 api
 
-Base API : 기밀
+* api 종류 : post
+* 주소 : /v1/table/create
 
+*데이터 베이스에 테이블을 생성하는 api*
 
-[예시]
-| 주소         | /v1/sign-up/check-name        |                            |         |                         |
-|--------------|-------------------------|----------------------------|---------|-------------------------|
-| api 종류     |                                                                                       |
-| 설명         |                                                                                   |
-| input형태    |                                                                                          |
-| input데이터  | Id                      | 필수                       | string  | 이메일 형식             |
-|              | pw                      | 필수                       | string  | 영어+숫자 조합 8자이상  |
-|              | company_name            | 필수                       | string  | 업체이름                |
-|              | company_address         | 필수                       | string  | 업체주소                |
-|              | postcode                |                            | string  | 우편번호                |
-|              | Company_address_detail  |                            | string  | 주소 상세               |
-|              | owner                   | 필수                       | string  | 사장                    |
-|              | phone                   | 필수                       | string  | 사장폰                  |
-| 결과         | {"code": "S01"}         |                            |         |                         |
-| 에러코드     | E00                     | 서버 syntax 에러(주로 db)  |         |                         |
-|              | E01                     | input error                |         |                         |
-|              | E02                     | 이미 가입 된 아이디        |         |                         |
+**input data**
 
+* name : String (필수)
+* tableName : String (필수)
+* fieldInfo : String(필수)
+
+>예시 input
+
+    {
+	"name" : "uuzaza",
+	"tableName" : "test2Table",
+	"fieldInfo" : "sno int(11) NOT NULL, name char(10) DEFAULT NULL, PRIMARY KEY (sno)"
+    }
 
 
+>response
 
-# 회원가입
-| 주소         | /v1/sign-up/request       |                            |         |                         |
-|--------------|-------------------------|----------------------------|---------|-------------------------|
-| api 종류     |                                                                                       |
-| 설명         |                                                                                   |
-| input형태    |                                                                                          |
-| input데이터  | name                      | 필수                       | string  | 영문 아이디             |
-|              | pw                      | 필수                       | string  | 8자이상 16자 이하 영문숫자 특수문자 조합  |
-| 결과         | {"result": "S01","message": "회원가입에 성공했습니다.","value": ""}                        |   
-| 에러코드     | E01                    | 아이디 중복됨  |         |                         |
+    {
+    "idValid": "available",
+    "connectionValid": "available"
+    }
+
+>error
+
+    {
+    "idValid": "unavailable",
+    "connectionValid": "unavailable"
+    }
+
+----
+## 테이블 모든 이름 조회 api
+
+* api 종류 : post
+* 주소 : /v1/table/all-tables
+
+*로그인한 사용자가 가진 테이블 이름을 모두 반환하는 api*
+
+**input data**
+
+* name : String (필수)
+
+>response
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": [
+        "test1",
+        "test2",
+        "test2Table",
+        "test2Table2",
+        "test2Table3"
+    ]
+    }
+
+>error
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": []
+    }
+
+----
+## 테이블에 칼럼 insert api
+
+* api 종류 : post
+* 주소 : /v1/table/insert
+
+*특정 테이블에 데이터를 insert 하는 api*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+* insert : String(필수)
+
+>예시 input
+
+    {
+	"tableName" : "test1",
+	"name" : "uuzaza",
+	"insert" : "10, '테스트3'"
+    }
+
+>response
+
+    {
+    "result": "S01",
+    "message": "insert 성공했습니다.",
+    "value": ""
+    }
+
+>error
+
+    {
+    "timestamp": "2020-05-10T02:45:43.846+0000",
+    "status": 500,
+    "error": "Internal Server Error",
+    "message": "StatementCallback; SQL [INSERT INTO uuzaza.test1 VALUES(10, '테스트3');]; Duplicate entry '10' for key 'PRIMARY'; nested exception is java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '10' for key 'PRIMARY'",
+    "path": "/dbmasterspringboot-1.0/v1/table/insert"
+    }
+
+----
+## 테이블 정보 받기 api
+
+* api 종류 : post
+* 주소 : /v1/table/get-info
+
+*특정 테이블의 칼럼 정보를 받아오는 api*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+
+>예시 input
+
+    {
+	"tableName" : "test1",
+	"name" : "uuzaza",
+    }
+
+>response
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": [
+        {
+            "columnName": "sno",
+            "datatype": "4",
+            "columnsize": "10",
+            "decimaldigits": null
+        },
+        {
+            "columnName": "name",
+            "datatype": "1",
+            "columnsize": "10",
+            "decimaldigits": null
+        }
+    ]
+    }
+
+>error
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": []
+    }
 
 
-# 아이디 중복검사
-| 주소         | /v1/sign-up/check-name     |                            |         |                         |
-|--------------|-------------------------|----------------------------|---------|-------------------------|
-| api 종류     |                                                                                       |
-| 설명         |                                                                                   |
-| input형태    |                                                                                          |
-| input데이터  | name                     | 필수                       | string  | 영문 아이디             |
-| 결과         | {"result": "S01","message": "회원가입에 성공했습니다.","value": ""}                        |   
-| 에러코드     | E01                    | 아이디 중복됨  |     {"result": "E01","message": "duplicate","value": ""}    |         |
 
-# 아이디 중복검사
-| 주소         | /v1/connection/check    |                            |         |                         |
-|--------------|-------------------------|----------------------------|---------|-------------------------|
-| api 종류     |                                                                                       |
-| 설명         |                                                                                   |
-| input형태    |                                                                                          |
-| input데이터  | name                     | 필수                       | string  | 영문 아이디             |
-|              | pw                      | 필수                       | string  | 8자이상 16자 이하 영문숫자 특수문자 조합  |
-| 결과         | {"result":"S01","message":"available","value":""}                      |   
-| 에러코드     | E01                    | 아이디 중복됨  |     {"result": "E01","message": "duplicate","value": ""}    |         |
-
-# 로그인
-| 주소         | /v1/connection/check    |                            |         |                         |
-|--------------|-------------------------|----------------------------|---------|-------------------------|
-| api 종류     |                                                                                       |
-| 설명         |                                                                                   |
-| input형태    |                                                                                          |
-| input데이터  | name                     | 필수                       | string  | 영문 아이디             |
-|              | pw                      | 필수                       | string  | 8자이상 16자 이하 영문숫자 특수문자 조합  |
-| 결과         | {"idValid":"available","connectionValid":"available"}                    |   
-| 에러코드     | E01                    | 접근불가  |     {"idValid":"unavailable","connectionValid":"unavailable"}   |         |
-
-# 테이블 생성
-| 주소         | /v1/connection/check    |                            |         |                         |
-|--------------|-------------------------|----------------------------|---------|-------------------------|
-| api 종류     |                                                                                       |
-| 설명         |                                                                                   |
-| input형태    |                                                                                          |
-| input데이터  | name      | 필수               | string  | 영문 아이디             |
-|              | tableName       | 필수       | string  | 8자이상 16자 이하 영문숫자 특수문자 조합  |
-|              | fieldInfo     | 필수     | string  | sno int(11) NOT NULL, name char(10) DEFAULT NULL, PRIMARY KEY (sno)  |
-| 결과         | {"idValid":"available","connectionValid":"available"}                    |   
-| 에러코드     | E01              | 이미 있는 테이블  |    {"result":"E01","message":"java.sql.SQLSyntaxErrorException: Table 'test2Table' already exists","value":""}  |         |
-
-
-
-
-
+----
+## thanks
+* [markdown-js](https://github.com/evilstreak/markdown-js)
 
