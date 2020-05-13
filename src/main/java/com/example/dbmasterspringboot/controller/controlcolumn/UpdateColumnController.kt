@@ -21,19 +21,23 @@ class UpdateColumnController(
     ): ResponseDTO {
         var resultStr = "failed"
         val currentTime = LocalDate.now()
-        val tableName = response["tableName"]
-        val fieldInfo = response["fieldInfo"]
-        val name = response["name"]
+        val primary_key_name = response["primary_key_name"]
+        val primary_key_value = response["primary_key_value"]
+        val update_column_name = response["update_column_name"]
+        val update_value = response["update_value"]
 
-        if (tableName == null || fieldInfo == null || name == null) {
+        val name = response["name"]
+        val tableName = response["tableName"]
+
+
+        if (tableName == null || name == null || primary_key_name == null || primary_key_value == null) {
             return ResponseDTO("E01","파라미터가 잘못 설정됬습니다.","")
         }
-        //fielddInfo = sno int(11) NOT NULL, name char(10) DEFAULT NULL, PRIMARY KEY (sno)
 
         return try {
-            val CREATE_TABLE_QUERY = "CREATE TABLE $name.$tableName ($fieldInfo) default character set utf8 collate utf8_general_ci;"
-            println(CREATE_TABLE_QUERY)
-            jdbcTemplate.execute(CREATE_TABLE_QUERY)
+            val UPDATE_TABLE_QUERY = "UPDATE $name.$tableName SET $update_column_name = $update_value WHERE $primary_key_name = $primary_key_value;"
+            println(UPDATE_TABLE_QUERY)
+            jdbcTemplate.execute(UPDATE_TABLE_QUERY)
             ResponseDTO("S01","","")
 
         } catch (e: Exception) {
