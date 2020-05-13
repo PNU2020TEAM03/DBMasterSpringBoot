@@ -23,7 +23,7 @@ class GetTableListController {
         val name = response["name"]
         val tableName = response["tableName"]
 
-        if (name == null) {
+        if (name == null || tableName == null) {
             return ResponseDTO("E01","파라미터가 잘못 설정됬습니다. tableName, name","")
         }
 
@@ -74,6 +74,9 @@ class GetTableListController {
             stmt.close()
             con.close()
             println("Disconnected From DB ..........")
+            if(resultArrayList.size == 0){
+                return ResponseDTO("E01","정보가 없습니다.",resultArrayList)
+            }
             return ResponseDTO("S01","",resultArrayList)
 
         } catch (e: SQLException) {

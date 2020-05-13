@@ -27,11 +27,9 @@ class DeleteColumnController(
         val name = response["name"]
         val tableName = response["tableName"]
 
-
-        if (tableName == null || name == null) {
+        if (tableName == null || name == null || primary_key_name == null || primary_key_value == null) {
             return ResponseDTO("E01","파라미터가 잘못 설정됬습니다.","")
         }
-        //fielddInfo = sno int(11) NOT NULL, name char(10) DEFAULT NULL, PRIMARY KEY (sno)
 
         return try {
             val DELET_COLUMN_QUERY = "DELETE FROM $name.$tableName WHERE $primary_key_name = $primary_key_value"
