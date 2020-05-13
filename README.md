@@ -15,7 +15,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 ----
 ## changelog
 * 2020.05.10 첫 등록
-* 2020.05.13 테이블 정보찾기 api 리스폰스 수정
+* 2020.05.13 테이블 정보찾기 api 리스폰스 수정 // 테이블 데이터 Update 항목 추가
 ----
 ## 목차
 * [회원가입 api](#-----api)
@@ -354,7 +354,51 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     "message": "java.sql.SQLSyntaxErrorException: Table 'uuzaz3a.test1' doesn't exist",
     "value": null
     }
+----
 
+## 테이블 데이터 Update api
+
+* api 종류 : post
+* 주소 : /v1/column/update
+
+*UPDATE --- SET --- = --- WHERE pk = ---*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+* primary_key_name : String (필수)
+* primary_key_value : String (필수)
+* upate_column_name : String (필수)
+* update_value : String (필수)
+
+>예시 input
+
+    {
+	"name" : "uuzaza",
+	"tableName" : "test1",
+	"primary_key_name" : "sno",
+	"primary_key_value" : "1",
+	"update_column_name" : "name",
+	"update_value" : "'업데이트적용'"
+     }
+
+
+>response
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": ""
+     }
+
+>error
+
+    {
+    "result": "E01",
+    "message": "java.sql.SQLSyntaxErrorException: Unknown column '업데이트적용' in 'field list'",
+    "value": ""
+    }
 
 ----
 ## thanks
