@@ -44,6 +44,12 @@ class GetTableListController {
             stmt = con.createStatement()
 
             val columns = con.metaData.getColumns(name,null,tableName,null)
+            val resultSetForPK = con.metaData.getPrimaryKeys(name,"",tableName)
+            var primayKey = ""
+            while (resultSetForPK.next()) {
+                println(resultSetForPK.getString("COLUMN_NAME") + ":" + resultSetForPK.getString("KEY_SEQ"));
+                primayKey = resultSetForPK.getString("COLUMN_NAME")
+            }
 
             var resultArrayList = ArrayList<TableColumnDTO>()
 
@@ -54,10 +60,15 @@ class GetTableListController {
                 val decimaldigits = columns.getString("DECIMAL_DIGITS")
                 val isNullable = columns.getString("IS_NULLABLE")
                 val is_autoIncrment = columns.getString("IS_AUTOINCREMENT")
-                //Printing results
-                val tableColumnDTO = TableColumnDTO(columnName,datatype,columnsize,decimaldigits,isNullable,is_autoIncrment)
-                resultArrayList.add(tableColumnDTO)
+                if(columnName.equals(primayKey)){
+                    val tableColumnDTO = TableColumnDTO("Y",columnName,datatype,columnsize,decimaldigits,isNullable,is_autoIncrment)
+                    resultArrayList.add(tableColumnDTO)
+                }else{
+                    val tableColumnDTO = TableColumnDTO("N",columnName,datatype,columnsize,decimaldigits,isNullable,is_autoIncrment)
+                    resultArrayList.add(tableColumnDTO)
+                }
 
+                //Printing results
                 println("$columnName---$datatype---$columnsize---$decimaldigits---$isNullable---$is_autoIncrment")
             }
             stmt.close()
