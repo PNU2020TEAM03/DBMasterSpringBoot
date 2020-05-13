@@ -268,8 +268,8 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 >error
 
     {
-    "result": "S01",
-    "message": "",
+    "result": "E01",
+    "message": "정보가 없습니다.",
     "value": []
     }
 
