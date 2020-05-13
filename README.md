@@ -15,7 +15,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 ----
 ## changelog
 * 2020.05.10 첫 등록
-* 2020.05.13 테이블 정보찾기 api 리스폰스 수정 // 테이블 데이터 Update 항목 추가
+* 2020.05.13 테이블 정보찾기 api 리스폰스 수정 // 테이블 데이터 Update 항목 추가 // 테이블 데이터 Delete 항목 추가
 ----
 ## 목차
 * [회원가입 api](#-----api)
@@ -397,6 +397,48 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     {
     "result": "E01",
     "message": "java.sql.SQLSyntaxErrorException: Unknown column '업데이트적용' in 'field list'",
+    "value": ""
+    }
+    
+    ----
+
+## 테이블 데이터 Delete api
+
+* api 종류 : post
+* 주소 : /v1/column/delete
+
+*DELETE --- WHERE WHERE pk = ---*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+* primary_key_name : String (필수)
+* primary_key_value : String (필수)
+
+>예시 input
+
+    {
+	"name" : "uuzaza",
+	"tableName" : "test1",
+	"primary_key_name" : "sno",
+	"primary_key_value" : "6"
+    }
+
+
+>response
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": ""
+    }
+
+>error
+
+    {
+    "result": "E01",
+    "message": "java.sql.SQLSyntaxErrorException: Unknown column 'sno3' in 'where clause'",
     "value": ""
     }
 
