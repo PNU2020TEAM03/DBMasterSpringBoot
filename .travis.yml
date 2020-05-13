@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk8
+  - amazon-corretto-11
 
 branches:
   only:
