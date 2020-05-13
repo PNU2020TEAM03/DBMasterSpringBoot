@@ -15,6 +15,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 ----
 ## changelog
 * 2020.05.10 첫 등록
+* 2020.05.13 테이블 정보찾기 api 리스폰스 수정
 ----
 ## 목차
 * [회원가입 api](#-----api)
@@ -248,12 +249,14 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     "message": "",
     "value": [
         {
+            "primaryKey": "Y",
             "columnName": "sno",
             "datatype": "4",
             "columnsize": "10",
             "decimaldigits": null
         },
         {
+            "primaryKey": "N",
             "columnName": "name",
             "datatype": "1",
             "columnsize": "10",
