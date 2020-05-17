@@ -28,7 +28,7 @@ class SignUpController(
             @RequestBody name: HashMap<String, String>
     ): ResponseDTO {
         val dbName: String? = name["name"]
-        val DB_NAME_CHECK_QUERY = "SELECT check_duplication FROM dbmaster_users WHERE dbname = \'$dbName\'"
+        val DB_NAME_CHECK_QUERY = "SELECT available FROM dbmaster_users WHERE dbname = \'$dbName\'"
 
         println(dbName)
         if(dbName == null) {
