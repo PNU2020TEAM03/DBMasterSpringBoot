@@ -26,7 +26,6 @@ class GetTableListController {
         if (name == null || tableName == null) {
             return ResponseDTO("E01","파라미터가 잘못 설정됬습니다. tableName, name","")
         }
-
         //디비 커넥션 준비
         var url: String? = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true"
         var con: Connection? = null
@@ -39,7 +38,7 @@ class GetTableListController {
             System.err.print("ClassNotFoundException : " + e.message)
         }
         try {
-            con = DriverManager.getConnection(url, "dbmaster", "root")
+            con = DriverManager.getConnection(url, "dbmaster", "dlfdlf11!!")
             println("Connected to DB ............")
             stmt = con.createStatement()
 
@@ -110,7 +109,7 @@ class GetTableListController {
             System.err.print("ClassNotFoundException : " + e.message)
         }
         try {
-            con = DriverManager.getConnection(url, "dbmaster", "root")
+            con = DriverManager.getConnection(url, "dbmaster", "dlfdlf11!!")
             println("Connected to DB ............")
             stmt = con.createStatement()
 

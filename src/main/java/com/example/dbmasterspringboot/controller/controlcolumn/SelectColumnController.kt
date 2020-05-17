@@ -42,7 +42,7 @@ class SelectColumnController(
             System.err.print("ClassNotFoundException : " + e.message)
         }
         try {
-            con = DriverManager.getConnection(url, "dbmaster", "root")
+            con = DriverManager.getConnection(url, "dbmaster", "dlfdlf11!!")
             println("Connected to DB ............")
 
             val SELECT_ALL_QUERY = "SELECT * FROM $name.$tableName;"
