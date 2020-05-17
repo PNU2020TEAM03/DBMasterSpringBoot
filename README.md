@@ -16,7 +16,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 ## changelog
 * 2020.05.10 첫 등록
 * 2020.05.13 테이블 정보찾기 api 리스폰스 수정 // 테이블 데이터 Update 항목 추가 // 테이블 데이터 Delete 항목 추가
-* 2020.05.17 테이블 DROP api 추가
+* 2020.05.17 테이블 DROP api 추가 // 테이블 RENAME api 추가
 ----
 ## 목차
 * [회원가입 api](#-----api)
@@ -477,6 +477,46 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     {
     "result": "E01",
     "message": "java.sql.SQLSyntaxErrorException: Unknown table 'DropTableTesttingHolyShitWhattheFuck'",
+    "value": ""
+    }
+    
+ ---
+## 테이블 RENAME api
+
+* api 종류 : post
+* 주소 : /v1/table/rename
+
+*ALTER TABLE name.TableName RENAME name.newName ---*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+* newName : String (필수)
+
+>예시 input
+
+    {
+	"name" : "test",
+	"tableName" : "test2Table",
+	"newName" : "test2TableNewName"
+	
+    }
+
+
+>response
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": ""
+    }
+
+>error
+
+    {
+    "result": "E01",
+    "message": "java.sql.SQLSyntaxErrorException: Table 'test.test2Table' doesn't exist",
     "value": ""
     }
     
