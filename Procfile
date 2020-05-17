@@ -1,1 +1,1 @@
-web: java -jar build/libs/dbmasterspringboot-1.0.jar
+web: java -Dspring.server.port=$PORT -jar build/libs/dbmasterspringboot-1.0.jar
