@@ -22,13 +22,6 @@ class SignUpController(
         return ResponseDTO("success", "success", "asdf")
     }
 
-    @PostMapping("/test1")
-    fun test1(
-            @RequestBody name: HashMap<String, String>
-    ): ResponseDTO {
-        return ResponseDTO("success", "success", "asdf")
-    }
-
     /* TODO 회원가입 시 중복확인에 대한 함수 중복이면 duplicate 리턴, 없으면 null 리턴 */
     @PostMapping("/v1/sign-up/check-name")
     fun checkDBName(
