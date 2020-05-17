@@ -16,6 +16,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 ## changelog
 * 2020.05.10 첫 등록
 * 2020.05.13 테이블 정보찾기 api 리스폰스 수정 // 테이블 데이터 Update 항목 추가 // 테이블 데이터 Delete 항목 추가
+* 2020.05.17 테이블 DROP api 추가
 ----
 ## 목차
 * [회원가입 api](#-----api)
@@ -441,8 +442,45 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     "message": "java.sql.SQLSyntaxErrorException: Unknown column 'sno3' in 'where clause'",
     "value": ""
     }
-
 ----
+
+## 테이블 DROP api
+
+* api 종류 : post
+* 주소 : /v1/table/drop
+
+*DROP TABLE ---*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+
+>예시 input
+
+    {
+	"name" : "test",
+	"tableName" : "testTable"
+     }
+
+
+>response
+
+    {
+    "result": "S01",
+    "message": "",
+    "value": ""
+    }
+
+>error
+
+    {
+    "result": "E01",
+    "message": "java.sql.SQLSyntaxErrorException: Unknown table 'DropTableTesttingHolyShitWhattheFuck'",
+    "value": ""
+    }
+    
+ ---
 ## thanks
 * [markdown-js](https://github.com/evilstreak/markdown-js)
 
