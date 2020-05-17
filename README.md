@@ -370,7 +370,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * tableName : String (필수)
 * primary_key_name : String (필수)
 * primary_key_value : String (필수)
-* upate_column_name : String (필수)
+* update_column_name : String (필수)
 * update_value : String (필수)
 
 >예시 input
