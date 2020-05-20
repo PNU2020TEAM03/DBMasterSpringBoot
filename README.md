@@ -28,6 +28,11 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [테이블에 칼럼 insert api](#테이블에-칼럼-insert-api)
 * [테이블 정보 받기 api](#테이블-정보-받기-api)
 * [테이블 데이터 전부 불러오기 api](#테이블-데이터-전부-불러오기-api)
+* [테이블 데이터 Update api](#테이블-데이터-Update-api)
+* [테이블 데이터 Delete api](#테이블-데이터-Delete-api)
+* [테이블 DROP api](#테이블-DROP-api)
+* [테이블 RENAME api](#테이블-RENAME-api)
+* [테이블 이름 중복검사 api](#테이블-이름-중복검사-api)
 
 ----
 ## 회원가입 api
