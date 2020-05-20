@@ -17,6 +17,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.10 첫 등록
 * 2020.05.13 테이블 정보찾기 api 리스폰스 수정 // 테이블 데이터 Update 항목 추가 // 테이블 데이터 Delete 항목 추가
 * 2020.05.17 테이블 DROP api 추가 // 테이블 RENAME api 추가
+* 2020 05.20 테이블 이름 중복검사 api 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -521,6 +522,43 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     }
     
  ---
+ ## 테이블 이름 중복검사 api
+
+* api 종류 : post
+* 주소 : /v1/table/duplicate
+
+*테이블 이름의 중복여부 리턴 ---*
+
+**input data**
+
+* name : String (필수)
+* tableName : String (필수)
+* newName : String (필수)
+
+>예시 input
+
+    {
+	"name" : "test",
+	"tableName" : "test3Table"
+    }
+
+
+>response
+
+    {
+    "result": "S01",
+    "message": "사용하실 수 있는 이름입니다.",
+    "value": ""
+    }
+
+>error
+
+    {
+    "result": "E01",
+    "message": "같은 이름의 테이블이 존재합니다.",
+    "value": ""
+    }
+    
 ## thanks
 * [markdown-js](https://github.com/evilstreak/markdown-js)
 
