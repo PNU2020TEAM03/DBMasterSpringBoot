@@ -7,7 +7,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.sql.SQLException
+import java.sql.*
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -15,6 +15,8 @@ import kotlin.collections.HashMap
 class CustomMailSender(
         @Autowired val jdbcTemplate: JdbcTemplate
 ) {
+
+    //인증받을 이메일 수신
     @RequestMapping("/v1/auth/request")
     fun insertTable(
             @RequestBody response: HashMap<String, String>
@@ -45,6 +47,7 @@ class CustomMailSender(
 
     }
 
+    //인증받을 이메일에 랜덤 6자리 번호 만들어서 보내주고 인증 디비에 이메일과 번호 저장
     @RequestMapping("/v1/mail/request")
     fun sendMail(
             @RequestBody response: HashMap<String, String>
@@ -80,5 +83,73 @@ class CustomMailSender(
             return ResponseDTO("E01", e.toString(), "")
         }
 
+    }
+
+    //사용자로부터 이메일과 인증번호를 받으면 인증 디비와 비교하여 일치하는지 판단
+    @RequestMapping("/v1/auth/check")
+    fun selectAllData(
+            @RequestBody response: HashMap<String, String>
+    ): ResponseDTO {
+        val email = response["email"]
+        val authNum = response["authNum"]
+
+        if (email == null || authNum == null) {
+            return ResponseDTO("E01", "파라미터가 잘못 설정됬습니다. email, authNum", "")
+        }
+        //디비 커넥션 준비
+        var url: String? = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true"
+        var con: Connection? = null
+        var stmt: Statement? = null
+        //디비안의 모든 테이블 디비 이름=name
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver")
+        } catch (e: ClassNotFoundException) {
+            System.err.print("ClassNotFoundException : " + e.message)
+        }
+        try {
+            con = DriverManager.getConnection(url, "dbmaster", "dlfdlf11!!")
+            println("Connected to DB ............")
+
+            val SELECT_ALL_QUERY = "SELECT * FROM dbmaster_master.dbmaster_authenticate;"
+            var pstmt = con.prepareStatement(SELECT_ALL_QUERY)
+            var authNumArray = ArrayList<String>()
+
+            try {
+                con.prepareStatement(
+                        SELECT_ALL_QUERY, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).use { selectStmt ->
+                    selectStmt.executeQuery().use { rs ->
+                        if (!rs.isBeforeFirst()) {
+                            println("no rows found")
+                        } else {
+                            while (rs.next()) {
+                                for (i in 1 until rs.getMetaData().getColumnCount() + 1) {
+                                    authNumArray.add(rs.getString(i))
+                                } // 한컬럼 다 넣어
+                            }//end of while
+                        }
+                    }
+                }
+            } catch (e: SQLException) {
+                return ResponseDTO("E02", e.toString(), null)
+            }
+            pstmt.close()
+            con.close()
+            println("Disconnected From DB ..........")
+
+            val answerAuthNum = authNumArray.last()
+            print(answerAuthNum)
+
+            //answerAuthNum 랑 디비 받은 값이랑 비교한다.
+            if(answerAuthNum == authNum){
+                return ResponseDTO("S01", "인증되었습니다.", null)
+            }else{
+                return ResponseDTO("E01", "인증에 실패했습니다. 번호가 일치하지 않습니다.", null)
+            }
+
+        } catch (e: SQLException) {
+            System.err.print("SQLException : " + e.message)
+            return ResponseDTO("E01", e.toString(), "")
+        }
     }
 }
