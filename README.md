@@ -18,6 +18,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.13 테이블 정보찾기 api 리스폰스 수정 // 테이블 데이터 Update 항목 추가 // 테이블 데이터 Delete 항목 추가
 * 2020.05.17 테이블 DROP api 추가 // 테이블 RENAME api 추가
 * 2020 05.20 테이블 이름 중복검사 api 추가
+* 2020.05.24 사용자 이메일 인증 요청 api 추가, 사용자 이메일 인증 확인 api 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -33,6 +34,8 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [테이블 DROP api](#테이블-DROP-api)
 * [테이블 RENAME api](#테이블-RENAME-api)
 * [테이블 이름 중복검사 api](#테이블-이름-중복검사-api)
+* [사용자 이메일 인증 api ](#사용자-이메일-인증-요청-api)
+* [사용자 이메일 인증 확인 API](#사용자-이메일-인증-확인-api)
 
 ----
 ## 회원가입 api
@@ -562,6 +565,78 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     "message": "같은 이름의 테이블이 존재합니다.",
     "value": ""
     }
+---
+## 사용자 이메일 인증 요청 API
+
+* api 종류 : post
+* 주소 : /v1/auth/request
+
+*사용자가 입력한 이메일에 인증번호를 전송한다.*
+
+**input data**
+
+* email : String (필수)
+
+    >예시 input
+
+        {
+            "email" : "uuzaza74@gmail.com"
+        }
+
+
+    >response
+
+        {
+            "result": "S01",
+            "message": "메일이 성공적으로 발송되었습니다.",
+            "value": ""
+        }
+
+    >error
+
+        {
+            "result": "E01",
+            "message": "이메일 형식이 잘못되었습니다.",
+            "value": ""
+        }
+        
+---
+## 사용자 이메일 인증 확인 API
+
+* api 종류 : post
+* 주소 : /v1/auth/check
+
+*사용자가 입력한 이메일에 전송된 인증번호를 받아서 디비값과 비교하여 인증한다.*
+
+**input data**
+
+* email : String (필수)
+* authNum : String(필수)
+
+>예시 input
+
+        {
+            "email" : "uuzaza74@gmail.com",
+            "authNum" : "877387"
+        }
+
+
+>response
+
+        {
+            "result": "S01",
+            "message": "인증되었습니다.",
+            "value": null
+        }
+
+>error
+
+    {
+        "result": "E01",
+        "message": "인증에 실패했습니다. 번호가 일치하지 않습니다.",
+        "value": null
+    }
+    
     
 ## thanks
 * [markdown-js](https://github.com/evilstreak/markdown-js)

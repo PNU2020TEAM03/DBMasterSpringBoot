@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.sql.*
 import java.util.*
+import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
 @RestController
@@ -28,7 +29,7 @@ class CustomMailSender(
         }
         println(email)
         //random number
-        val ranNum : String = (Random().nextInt(900000) + 100000).toString()
+        val ranNum: String = (Random().nextInt(900000) + 100000).toString()
 
         return try {
             val SELECT_ALL_FROM_TABLE = "INSERT INTO dbmaster_master.dbmaster_authenticate VALUES('$email', '$ranNum');"
@@ -36,9 +37,46 @@ class CustomMailSender(
             jdbcTemplate.execute(SELECT_ALL_FROM_TABLE)
             val map = HashMap<String, String>()
             map.put("address", email)
-            map.put("authNum",ranNum)
-            sendMail(map)
-            ResponseDTO("S01", "메일함을 확인해 주세요.", "")
+            map.put("authNum", ranNum)
+
+            val address = map["address"] ?: return ResponseDTO("E01", "파라미터가 잘못 설정됬습니다.", "")
+            val authNum = map["authNum"] ?: return ResponseDTO("E01", "파라미터가 잘못 설정됬습니다. authNum", "")
+            print(address)
+            print(authNum)
+
+            if(checkEmail(address) == false){
+                return ResponseDTO("E01", "이메일 형식이 잘못되었습니다.", "")
+            }
+
+            return try {
+                val sender = JavaMailSenderImpl()
+                sender.host = "smtp.gmail.com"
+                sender.port = 587
+                sender.username = "haningyainformation@gmail.com"
+                sender.password = "Helxo116!"
+                sender.javaMailProperties.setProperty("mail.smtp.auth", "true")
+                sender.javaMailProperties.setProperty("mail.smtp.starttls.enable", "true")
+
+                val senderMail = "uuzaza@naver.com"
+                val mail = MailHandler(sender)
+                mail.setFrom("haningyainformation@gmail.com", "dbMaster")
+                mail.setTo(address)
+                mail.setSubject("디비 마스터 회원가입 인증번호 메일")
+
+
+                mail.setText(StringBuffer().append("<h1>회원가입 인증메일입니다.</h1>")
+                        .append("<p>3분 내로 인증번호를 입력해 주세요</p>")
+                        .append(authNum)
+                        .toString()
+                )
+                mail.send()
+
+                return ResponseDTO("S01", "메일이 성공적으로 발송되었습니다.", "")
+            } catch (e: Exception) {
+
+                return ResponseDTO("E01", e.toString(), "")
+            }
+
 
         } catch (e: SQLException) {
             System.err.print("SQLException : " + e.message)
@@ -47,43 +85,6 @@ class CustomMailSender(
 
     }
 
-    //인증받을 이메일에 랜덤 6자리 번호 만들어서 보내주고 인증 디비에 이메일과 번호 저장
-    @RequestMapping("/v1/mail/request")
-    fun sendMail(
-            @RequestBody response: HashMap<String, String>
-    ): ResponseDTO {
-        val address = response["address"] ?: return ResponseDTO("E01", "파라미터가 잘못 설정됬습니다.", "")
-        val authNum = response["authNum"] ?: return ResponseDTO("E01", "파라미터가 잘못 설정됬습니다. authNum", "")
-        print(address)
-        print(authNum)
-        try {
-            val sender = JavaMailSenderImpl()
-            sender.host = "smtp.gmail.com"
-            sender.port = 587
-            sender.username = "haningyainformation@gmail.com"
-            sender.password = "Helxo116!"
-            sender.javaMailProperties.setProperty("mail.smtp.auth", "true")
-            sender.javaMailProperties.setProperty("mail.smtp.starttls.enable", "true")
-
-            val senderMail = "uuzaza@naver.com"
-            val mail = MailHandler(sender)
-            mail.setFrom("haningyainformation@gmail.com", "dbMaster")
-            mail.setTo(address)
-            mail.setSubject("디비 마스터 회원가입 인증번호 메일")
-
-
-            mail.setText(StringBuffer().append("<h1>회원가입 인증메일입니다.</h1>")
-                    .append("<p>3분 내로 인증번호를 입력해 주세요</p>")
-                    .append(authNum)
-                    .toString()
-            )
-            mail.send()
-            return ResponseDTO("S01", "메일이 성공적으로 발송되었습니다.", "")
-        } catch (e: Exception) {
-            return ResponseDTO("E01", e.toString(), "")
-        }
-
-    }
 
     //사용자로부터 이메일과 인증번호를 받으면 인증 디비와 비교하여 일치하는지 판단
     @RequestMapping("/v1/auth/check")
@@ -141,9 +142,9 @@ class CustomMailSender(
             print(answerAuthNum)
 
             //answerAuthNum 랑 디비 받은 값이랑 비교한다.
-            if(answerAuthNum == authNum){
+            if (answerAuthNum == authNum) {
                 return ResponseDTO("S01", "인증되었습니다.", null)
-            }else{
+            } else {
                 return ResponseDTO("E01", "인증에 실패했습니다. 번호가 일치하지 않습니다.", null)
             }
 
@@ -151,5 +152,18 @@ class CustomMailSender(
             System.err.print("SQLException : " + e.message)
             return ResponseDTO("E01", e.toString(), "")
         }
+    }
+
+    val EMAIL_ADDRESS_PATTERN: Pattern = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                    "\\@" +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                    "(" +
+                    "\\." +
+                    "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                    ")+"
+    )
+    private fun checkEmail(email: String): Boolean {
+        return EMAIL_ADDRESS_PATTERN.matcher(email).matches()
     }
 }
