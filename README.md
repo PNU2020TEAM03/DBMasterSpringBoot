@@ -538,7 +538,6 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 
 * name : String (필수)
 * tableName : String (필수)
-* newName : String (필수)
 
 >예시 input
 
