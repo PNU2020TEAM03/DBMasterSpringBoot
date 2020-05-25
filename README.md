@@ -19,6 +19,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.17 테이블 DROP api 추가 // 테이블 RENAME api 추가
 * 2020 05.20 테이블 이름 중복검사 api 추가
 * 2020.05.24 사용자 이메일 인증 요청 api 추가, 사용자 이메일 인증 확인 api 추가
+* 2020.05.25 테이블 내 데이터 검색 api 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -36,6 +37,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [테이블 이름 중복검사 api](#테이블-이름-중복검사-api)
 * [사용자 이메일 인증 api ](#사용자-이메일-인증-요청-api)
 * [사용자 이메일 인증 확인 API](#사용자-이메일-인증-확인-api)
+* [테이블 내 데이터 검색 API](#테이블-내-데이터-검색-api)
 
 ----
 ## 회원가입 api
@@ -637,6 +639,48 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
         "value": null
     }
     
+---
+## 테이블 내 데이터 검색 API
+* api 종류 : post
+* 주소 : /v1/table/search
+*특정 테이블에 사용자가 입력한 keyword와 일치하는 데이터가 있는지 검색한다.*
+
+**input data**
+
+* tableName : String(필수)
+* name : String(필수)
+* keyword : String(필수)
+
+    >예시 input
+
+            {
+                "tableName" : "testTable",
+                "name" : "test",
+                "keyword" : "3"
+            }
+
+
+    >response
+
+            {
+                "result": "S01",
+                "message": "testTable 에서 [3] 검색결과",
+                "value": [
+                    {
+                        "sno": "3",
+                        "name": "테스트3"
+                    }
+                ]
+            }
+
+    >error
+
+        {
+            "result": "E02",
+            "message": "java.sql.SQLSyntaxErrorException: Table 'test2.testTable' doesn't exist",
+            "value": null
+        }
+---
     
 ## thanks
 * [markdown-js](https://github.com/evilstreak/markdown-js)

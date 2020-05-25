@@ -80,7 +80,7 @@ class SearchTableController(
             pstmt.close()
             con.close()
             println("Disconnected From DB ..........")
-            return ResponseDTO("S01", "$tableName 에서 \"$keyword\" 검색결과", jsonArray)
+            return ResponseDTO("S01", "$tableName 에서 [$keyword] 검색결과", jsonArray)
 
         } catch (e: SQLException) {
             System.err.print("SQLException : " + e.message)
