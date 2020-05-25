@@ -19,7 +19,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.17 테이블 DROP api 추가 // 테이블 RENAME api 추가
 * 2020 05.20 테이블 이름 중복검사 api 추가
 * 2020.05.24 사용자 이메일 인증 요청 api 추가, 사용자 이메일 인증 확인 api 추가
-* 2020.05.25 테이블 내 데이터 검색 api 추가
+* 2020.05.25 테이블 내 데이터 검색 api 추가, 사용자 지정 SELECT 쿼리문 처리 api 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -38,6 +38,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [사용자 이메일 인증 api ](#사용자-이메일-인증-요청-api)
 * [사용자 이메일 인증 확인 API](#사용자-이메일-인증-확인-api)
 * [테이블 내 데이터 검색 API](#테이블-내-데이터-검색-api)
+* [사용자 지정 SELECT 쿼리문 API](#사용자-지정-select-쿼리문-api)
 
 ----
 ## 회원가입 api
@@ -681,7 +682,48 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
             "value": null
         }
 ---
-    
+## 사용자 지정 SELECT 쿼리문 API
+* api 종류 : post
+* 주소 : /v1/query/custom
+*사용자가 지정한 커스텀한 SELECT 문을 처리할 수 있다.*
+
+**input data**
+
+* tableName : String(필수)
+* name : String(필수)
+* query : String(필수)
+
+    >예시 input
+
+            {
+                "name" : "test",
+                "tableName" : "testTable",
+                "query" : "SELECT * FROM test.testTable WHERE sno = 2"
+            }
+
+
+    >response
+
+            {
+                "result": "S01",
+                "message": "",
+                "value": [
+                    {
+                        "sno": 2,
+                        "name": "테스트2"
+                    }
+                ]
+            }
+
+    >error
+
+        {
+            "result": "E02",
+            "message": "java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '2' at line 1",
+            "value": null
+        }
+---
+   
 ## thanks
 * [markdown-js](https://github.com/evilstreak/markdown-js)
 
