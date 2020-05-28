@@ -20,6 +20,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020 05.20 테이블 이름 중복검사 api 추가
 * 2020.05.24 사용자 이메일 인증 요청 api 추가, 사용자 이메일 인증 확인 api 추가
 * 2020.05.25 테이블 내 데이터 검색 api 추가, 사용자 지정 SELECT 쿼리문 처리 api 추가
+* 2020.05.28 테이블 정보 받아오기 api 수정
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -258,24 +259,22 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 >response
 
     {
-    "result": "S01",
-    "message": "",
-    "value": [
-        {
-            "primaryKey": "Y",
-            "columnName": "sno",
-            "datatype": "4",
-            "columnsize": "10",
-            "decimaldigits": null
-        },
-        {
-            "primaryKey": "N",
-            "columnName": "name",
-            "datatype": "1",
-            "columnsize": "10",
-            "decimaldigits": null
-        }
-    ]
+        "result": "S01",
+        "message": "",
+        "value": [
+            {
+                "ispk": "Y",
+                "columnName": "sno",
+                "datatype": "4",
+                "columnsize": "10"
+            },
+            {
+                "ispk": "N",
+                "columnName": "name",
+                "datatype": "1",
+                "columnsize": "10"
+            }
+        ]
     }
 
 >error
