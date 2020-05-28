@@ -11,10 +11,12 @@ import java.sql.SQLException
 import java.sql.Statement
 import java.util.ArrayList
 import java.util.HashMap
+import javax.xml.ws.Response
 
 @RestController
 class GetTableListController {
 
+    //table 정보 받기
     @RequestMapping("/v1/table/get-info")
     fun getTableInfo(
             @RequestBody response : HashMap<String, String>
@@ -45,37 +47,47 @@ class GetTableListController {
             val columns = con.metaData.getColumns(name,null,tableName,null)
             val resultSetForPK = con.metaData.getPrimaryKeys(name,"",tableName)
             var primayKey = ""
+
+
+            var resultArrayList = ArrayList<TableColumnDTO>()
+
             while (resultSetForPK.next()) {
                 println(resultSetForPK.getString("COLUMN_NAME") + ":" + resultSetForPK.getString("KEY_SEQ"));
                 primayKey = resultSetForPK.getString("COLUMN_NAME")
+                println("primary key is $primayKey")
             }
-
-            var resultArrayList = ArrayList<TableColumnDTO>()
 
             while (columns.next()){
                 val columnName = columns.getString("COLUMN_NAME")
                 val datatype = columns.getString("DATA_TYPE")
                 val columnsize = columns.getString("COLUMN_SIZE")
                 val decimaldigits = columns.getString("DECIMAL_DIGITS")
+
                 val isNullable = columns.getString("IS_NULLABLE")
                 val is_autoIncrment = columns.getString("IS_AUTOINCREMENT")
+
+
                 if(columnName.equals(primayKey)){
-                    val tableColumnDTO = TableColumnDTO("Y",columnName,datatype,columnsize,decimaldigits,isNullable,is_autoIncrment)
+                    val tableColumnDTO = TableColumnDTO("Y",columnName,datatype,columnsize)
                     resultArrayList.add(tableColumnDTO)
+                    println(tableColumnDTO.ispk)
+
                 }else{
-                    val tableColumnDTO = TableColumnDTO("N",columnName,datatype,columnsize,decimaldigits,isNullable,is_autoIncrment)
+                    val tableColumnDTO = TableColumnDTO("N",columnName,datatype,columnsize)
                     resultArrayList.add(tableColumnDTO)
+                    println(tableColumnDTO.ispk)
                 }
 
                 //Printing results
-                println("$columnName---$datatype---$columnsize---$decimaldigits---$isNullable---$is_autoIncrment")
             }
             stmt.close()
             con.close()
             println("Disconnected From DB ..........")
+            println(resultArrayList)
             if(resultArrayList.size == 0){
                 return ResponseDTO("E01","정보가 없습니다.",resultArrayList)
             }
+            print(ResponseDTO("S01","",resultArrayList))
             return ResponseDTO("S01","",resultArrayList)
 
         } catch (e: SQLException) {
