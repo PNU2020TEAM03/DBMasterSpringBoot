@@ -21,6 +21,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.24 사용자 이메일 인증 요청 api 추가, 사용자 이메일 인증 확인 api 추가
 * 2020.05.25 테이블 내 데이터 검색 api 추가, 사용자 지정 SELECT 쿼리문 처리 api 추가
 * 2020.05.28 테이블 정보 받아오기 api 수정, 테이블 데이터 csv 파일 export api 추가
+* 2020.05.30 비밀번호 수정 api 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -41,6 +42,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [테이블 내 데이터 검색 API](#테이블-내-데이터-검색-api)
 * [사용자 지정 SELECT 쿼리문 API](#사용자-지정-select-쿼리문-api)
 * [테이블 데이터 csv 파일로 export API](#테이블-데이터-csv-파이로-export-api)
+* [비밀번호 수정 API](#비밀번호-수정-api)
 
 ----
 ## 회원가입 api
@@ -756,6 +758,42 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
            {
                "result": "E01",
                "message": "Table 'test2.testTable' doesn't exist",
+               "value": ""
+           }
+   ---
+   ## 비밀번호 수정 API
+   * api 종류 : post
+   * 주소 : /v1/pw/change
+   *사용자의 계정 비밀번호를 수정한다.*
+
+   **input data**
+
+   * name : String(필수)
+   * oldPw : String(필수)
+   * newPw : String(필수)
+
+       >예시 input
+
+               {
+                   "name" : "test",
+                   "oldPw" : "test",
+                   "newPw" : "1q2w3e4r"
+               }
+
+
+       >response
+
+               {
+                   "result": "S01",
+                   "message": "비밀번호가 수정되었습니다..",
+                   "value": ""
+               }
+
+       >error
+
+           {
+               "result": "E01",
+               "message": "이전 비밀번호가 일치하지 않습니다.",
                "value": ""
            }
    ---
