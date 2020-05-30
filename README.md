@@ -21,7 +21,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.24 사용자 이메일 인증 요청 api 추가, 사용자 이메일 인증 확인 api 추가
 * 2020.05.25 테이블 내 데이터 검색 api 추가, 사용자 지정 SELECT 쿼리문 처리 api 추가
 * 2020.05.28 테이블 정보 받아오기 api 수정, 테이블 데이터 csv 파일 export api 추가
-* 2020.05.30 비밀번호 수정 api 추가
+* 2020.05.30 비밀번호 수정 api 추가, 테이블 Join api 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -43,6 +43,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [사용자 지정 SELECT 쿼리문 API](#사용자-지정-select-쿼리문-api)
 * [테이블 데이터 csv 파일로 export API](#테이블-데이터-csv-파이로-export-api)
 * [비밀번호 수정 API](#비밀번호-수정-api)
+* [테이블 JOIN API](#테이블-join-api)
 
 ----
 ## 회원가입 api
@@ -795,6 +796,82 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
                "result": "E01",
                "message": "이전 비밀번호가 일치하지 않습니다.",
                "value": ""
+           }
+   ---
+   ## 테이블 JOIN API
+   * api 종류 : post
+   * 주소 : /v1/table/join
+   *두 테이블을 입력받은 column 정보로 Join 하여 표시한다.*
+
+   **input data**
+
+   * name : String(필수)
+   * tableName : String(필수)
+   * joinTable : String(필수)
+   * joiningColumn : String(필수)
+
+
+       >예시 input
+
+               {
+                   "name" : "test",
+                   "tableName" : "tableA",
+                   "joinTable" : "tableB",
+                   "joiningColumn" : "id"
+               }
+
+
+       >response
+
+               {
+                   "result": "S01",
+                   "message": "tableA 과 tableB 의 join 결과",
+                   "value": [
+                       {
+                           "address": "xfds",
+                           "phone": "01029302",
+                           "name": "fewg",
+                           "payment": "1239",
+                           "id": "10293039",
+                           "dept": "pop",
+                           "hobby": "eng"
+                       },
+                       {
+                           "address": "few",
+                           "phone": "01029382938",
+                           "name": "awef",
+                           "payment": "10",
+                           "id": "19920392",
+                           "dept": "sw",
+                           "hobby": "wfa"
+                       },
+                       {
+                           "address": "awef",
+                           "phone": "01023231232",
+                           "name": "jeijfe",
+                           "payment": "12899",
+                           "id": "201524447",
+                           "dept": "qwd",
+                           "hobby": "qwr1"
+                       },
+                       {
+                           "address": "idonkwn",
+                           "phone": "01012341234",
+                           "name": "Kim",
+                           "payment": "80000",
+                           "id": "201724447",
+                           "dept": "sdw",
+                           "hobby": "???"
+                       }
+                   ]
+               }
+
+       >error
+
+           {
+               "result": "E02",
+               "message": "java.sql.SQLSyntaxErrorException: Unknown column 'a.id2' in 'where clause'",
+               "value": null
            }
    ---
 ## thanks
