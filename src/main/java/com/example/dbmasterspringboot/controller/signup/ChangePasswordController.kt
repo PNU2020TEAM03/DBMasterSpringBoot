@@ -85,7 +85,6 @@ class ChangePasswordController(
             println("Disconnected From DB ..........")
 
             /* 새로운 비밀번호 설정 */
-
             return try {
                 val UPDATE_TABLE_QUERY = "UPDATE dbmaster_users SET pw = '$newPw' WHERE dbname = '$id';"
                 println(UPDATE_TABLE_QUERY)
