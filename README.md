@@ -22,6 +22,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.25 테이블 내 데이터 검색 api 추가, 사용자 지정 SELECT 쿼리문 처리 api 추가
 * 2020.05.28 테이블 정보 받아오기 api 수정, 테이블 데이터 csv 파일 export api 추가
 * 2020.05.30 비밀번호 수정 api 추가, 테이블 Join api 추가
+* 2020.06.01 특정 칼럼 기준 정렬 api 추가,
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -44,6 +45,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [테이블 데이터 csv 파일로 export API](#테이블-데이터-csv-파이로-export-api)
 * [비밀번호 수정 API](#비밀번호-수정-api)
 * [테이블 JOIN API](#테이블-join-api)
+* [특정 칼럼 기준 정렬 API](#특정-칼럼-기준-정렬-api)
 
 ----
 ## 회원가입 api
@@ -871,6 +873,113 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
            {
                "result": "E02",
                "message": "java.sql.SQLSyntaxErrorException: Unknown column 'a.id2' in 'where clause'",
+               "value": null
+           }
+   ---
+   ## 특정 칼럼 기준 정렬 API
+   * api 종류 : post
+   * 주소 : /v1/table/sort
+   *입력받은 테이블에 대해 입력받은 칼럼을 입력받은 순서(오름차순. 내림차순) 으로 정렬히여 반환한다.*
+
+   **input data**
+
+   * name : String(필수)
+   * tableName : String(필수)
+   * sortColumn : String(필수)
+   * direction : String(필수)
+
+
+       >예시 input
+
+               {
+                   "name" : "test",
+                   "tableName" : "testTable",
+                   "sortColumn" : "name",
+                   "direction" : "DESC"
+               }
+
+
+
+       >response
+
+               {
+                   "result": "S01",
+                   "message": "",
+                   "value": [
+                       {
+                           "sno": 9,
+                           "name": "테스트9",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 8,
+                           "name": "테스트8",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 6,
+                           "name": "테스트6",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 5,
+                           "name": "테스트5",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 4,
+                           "name": "테스트4",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 3,
+                           "name": "테스트3",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 2,
+                           "name": "테스트2",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 12,
+                           "name": "테스트12",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 11,
+                           "name": "테스트11",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 10,
+                           "name": "테스트10",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       },
+                       {
+                           "sno": 1,
+                           "name": "테스트1",
+                           "testColumn1": 1,
+                           "testColumn2": 2
+                       }
+                   ]
+               }
+
+       >error
+
+           {
+               "result": "E02",
+               "message": "java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DESCa' at line 1",
                "value": null
            }
    ---
