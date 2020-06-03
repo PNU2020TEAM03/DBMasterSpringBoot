@@ -59,12 +59,23 @@ class GetTableListController {
 
             while (columns.next()){
                 val columnName = columns.getString("COLUMN_NAME")
-                val datatype = columns.getString("DATA_TYPE")
+                var datatype = columns.getString("DATA_TYPE")
                 val columnsize = columns.getString("COLUMN_SIZE")
                 val decimaldigits = columns.getString("DECIMAL_DIGITS")
 
                 val isNullable = columns.getString("IS_NULLABLE")
                 val is_autoIncrment = columns.getString("IS_AUTOINCREMENT")
+
+
+
+                when (datatype) {
+                    "1" -> datatype = "VARCHAR"
+                    "4" -> datatype = "INTEGER"
+                    else -> { // Note the block
+                        print("UNKOWN")
+                    }
+                }
+
 
 
                 if(columnName.equals(primayKey)){
