@@ -22,7 +22,8 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.25 테이블 내 데이터 검색 api 추가, 사용자 지정 SELECT 쿼리문 처리 api 추가
 * 2020.05.28 테이블 정보 받아오기 api 수정, 테이블 데이터 csv 파일 export api 추가
 * 2020.05.30 비밀번호 수정 api 추가, 테이블 Join api 추가
-* 2020.06.01 특정 칼럼 기준 정렬 api 추가,
+* 2020.06.01 특정 칼럼 기준 정렬 api 추가
+* 2020.06.07 특정 테이블 외래키 추가 api 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -46,6 +47,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [비밀번호 수정 API](#비밀번호-수정-api)
 * [테이블 JOIN API](#테이블-join-api)
 * [특정 칼럼 기준 정렬 API](#특정-칼럼-기준-정렬-api)
+* [특정 테이블 외래키 추가 API](#특정-테이블-외래키-추가-api)
 
 ----
 ## 회원가입 api
@@ -982,7 +984,54 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
                "message": "java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DESCa' at line 1",
                "value": null
            }
+           
+           
    ---
+   ## 특정 테이블 외래키 추가 API
+   * api 종류 : post
+   * 주소 : /v1/table/set-foreign
+   *두개의 테이블을 입력받아 테이블 간 외래키 관계를 추가해 준다..*
+
+   **input data**
+
+   * name : String(필수)
+   * tableName : String(필수)
+   * baseColumn : String(필수)
+   * targetTable : String(필수)
+   * targetColumn : String(필수) 
+
+
+       >예시 input "ALTER TABLE test.tableA ADD FOREIGN KEY (id) REFERENCES test.tableB(id)"
+
+               {
+                   "name" : "test",
+                   "tableName" : "tableA",
+                   "baseColumn" : "id",
+                   "targetTable" : "tableB",
+                   "targetColumn" : "id"
+               }
+
+
+
+
+
+       >response
+
+               {
+                   "result": "S01",
+                   "message": "",
+                   "value": ""
+               }
+
+       >error
+
+           {
+               "result": "E01",
+               "message": "java.sql.SQLException: Can't create table 'test.#sql-14f3_c9a4' (errno: 150)",
+               "value": ""
+           }
+           
+---
 ## thanks
 * [markdown-js](https://github.com/evilstreak/markdown-js)
 
