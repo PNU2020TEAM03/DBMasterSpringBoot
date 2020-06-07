@@ -1032,6 +1032,42 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
            }
            
 ---
+-
+## 특정 테이블 외래키 정보 조회 API
+* api 종류 : post
+* 주소 : /v1/table/get-foreign
+*특정 테이블에 있는 외래키 정보를 받아온다.*
+
+**input data**
+
+* name : String(필수)
+* tableName : String(필수)
+
+
+
+    >예시 input
+
+            {
+                "name" : "test",
+                "tableName" : "tableB"
+            }
+
+    >response
+
+            {
+                "result": "S01",
+                "message": "tableA 의 id 칼럼과 외래키 관계임니다.",
+                "value": ""
+            }
+
+    >error
+
+        {
+            "result": "E01",
+            "message": "외래키가 없습니다.",
+            "value": ""
+        }
+        
 ## thanks
 * [markdown-js](https://github.com/evilstreak/markdown-js)
 
