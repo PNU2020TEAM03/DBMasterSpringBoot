@@ -71,6 +71,15 @@ class GetTableListController {
                 when (datatype) {
                     "1" -> datatype = "VARCHAR"
                     "4" -> datatype = "INTEGER"
+                    "12" -> datatype = "VARCHAR"
+                    "3" -> datatype = "DECIMAL"
+                    "93" -> datatype = "DATETIME"
+                    "-4" -> datatype = "BLOB"
+                    "-2" -> datatype = "BINARY"
+                    "-3" -> datatype = "BLOB"
+                    "255" -> datatype = "TEXT"
+                    "12" -> datatype = "VARCHAR"
+
                     else -> { // Note the block
                         print("UNKOWN")
                     }
