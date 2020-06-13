@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.queryForObject
 import org.springframework.web.bind.annotation.*
+import java.sql.SQLIntegrityConstraintViolationException
 import java.time.LocalDate
 import javax.servlet.http.HttpServletRequest
 
@@ -40,6 +41,8 @@ class SignUpController(
             ResponseDTO("E01",duplicationResult.toString(),"")
         } catch (e: Exception) {
             duplicationResult = "available"
+            print(e.toString())
+
             ResponseDTO("S01",duplicationResult.toString(),"")
         }
     }
@@ -56,17 +59,14 @@ class SignUpController(
 
         println("$dbName, $password")
 
-        if(dbName == null && password == null){
-            /* name, pw 파라미터가 입력되지 않았거나 값이 없습니다. */
-            return ResponseDTO("E01","","")
-        }
-        if(dbName == null){
+
+        if(dbName == null || dbName == ""){
             /* name 파라미터가 입력되지 않았거나 값이 없습니다. */
-            return ResponseDTO("E02","","")
+            return ResponseDTO("E02","아이디가 입력되지 않았습니다.","")
         }
-        if(password == null){
+        if(password == null || password == ""){
             /* pw 파라미터가 입력되지 않았거나 값이 없습니다. */
-            return ResponseDTO("E03","","")
+            return ResponseDTO("E03","비밀번호가 입력되지 않았습니다.","")
         }
         try {
             /* master DB에 유저 등록 및 DB 생성 */
@@ -85,9 +85,21 @@ class SignUpController(
             jdbcTemplate.execute(FLUSH_GRANT_QUERY)
 
             return ResponseDTO("S01","회원가입에 성공했습니다.","")
-        } catch (e: Exception) {
-            resultStr = e.cause.toString()
-            return ResponseDTO("E01",resultStr,"")
+
+        } catch (e : Exception){
+            print(e.message)
+            if(e.message!!.contains("SQLIntegrityConstraintViolationException")){
+                return ResponseDTO("E01","$dbName 은 아이디로 사용하실 수 없습니다.","");
+            }
+            if(e.message!!.contains("SQLSyntaxErrorException")){
+                return ResponseDTO("E04","SQL 문법 오류입니다. 특수문자를 사용하지 마세요.","");
+            }
+            if(e.message!!.contains("SQLException")){
+                return ResponseDTO("E05","확인되지 않은 SQL 오류입니다.","");
+            }
+
+            return ResponseDTO("E01","${e.message}","");
+
         }
     }
 }
