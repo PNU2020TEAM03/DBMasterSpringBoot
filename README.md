@@ -24,7 +24,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.30 비밀번호 수정 api 추가, 테이블 Join api 추가
 * 2020.06.01 특정 칼럼 기준 정렬 api 추가
 * 2020.06.07 특정 테이블 외래키 추가 api 추가
-* 2020.06.13 회원가입 api 에러코드 수정,
+* 2020.06.13 회원가입 api 에러코드 수정, INSERT api 에러코드 수정
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -272,11 +272,34 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 >error
 
     {
-    "timestamp": "2020-05-10T02:45:43.846+0000",
-    "status": 500,
-    "error": "Internal Server Error",
-    "message": "StatementCallback; SQL [INSERT INTO uuzaza.test1 VALUES(10, '테스트3');]; Duplicate entry '10' for key 'PRIMARY'; nested exception is java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '10' for key 'PRIMARY'",
-    "path": "/dbmasterspringboot-1.0/v1/table/insert"
+        "result": "E01",
+        "message": "테이블을 입력하지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E02",
+        "message": "데이터베이스 이름을 입력하지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E03",
+        "message": "입력할 데이터가 비어있습니다.",
+        "value": ""
+    }
+    {
+        "result": "E04",
+        "message": "SQL 문법 오류입니다.",
+        "value": "org.springframework.jdbc.BadSqlGrammarException: StatementCallback; bad SQL grammar [INSERT INTO test.tableB VALUES(33,201723332, '01022993322', 'testname', 'addressexample');]; nested exception is java.sql.SQLException: Column count doesn't match value count at row 1"
+    }
+    {
+        "result": "E05",
+        "message": "입력된 데이터 타입이 칼럼 타입과 다릅니다.",
+        "value": ""
+    }
+    {
+        "result": "E06",
+        "message": "이미 입력된 데이터 입니다.",
+        "value": ""
     }
 
 ----
