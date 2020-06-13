@@ -30,8 +30,23 @@ class UpdateColumnController(
         val tableName = response["tableName"]
 
 
-        if (tableName == null || name == null || primary_key_name == null || primary_key_value == null) {
-            return ResponseDTO("E01","파라미터가 잘못 설정됬습니다.","")
+        if (name == null || name == "") {
+            return ResponseDTO("E01","데이터 베이스 이름을 입력하지 않았습니다.","")
+        }
+        if (tableName == null || tableName == "") {
+            return ResponseDTO("E02","테이블 이름을 입력하지 않았습니다.","")
+        }
+        if (primary_key_name == null || primary_key_name == "") {
+            return ResponseDTO("E03","Primary Key를 입력하지 않았습니다.","")
+        }
+        if (primary_key_value == null || primary_key_value == "") {
+            return ResponseDTO("E04","Primary Key 값이 입력되지 않았습니다.","")
+        }
+        if (update_column_name == null || update_column_name == "") {
+            return ResponseDTO("E05","업데이트할 column 이름이 입력되지 않았습니다.","")
+        }
+        if (update_value == null || update_value == "") {
+            return ResponseDTO("E06","업데이트할 column의 값이 입력되지 않았습니다.","")
         }
 
         return try {
@@ -41,6 +56,12 @@ class UpdateColumnController(
             ResponseDTO("S01","","")
 
         } catch (e: Exception) {
+            if(e.message!!.contains("doesn't exist")){
+                return ResponseDTO("E07","테이블이 존재하지 않습니다.","");
+            }
+            if(e.message!!.contains("SQLSyntaxErrorException")){
+                return ResponseDTO("E08","SQL 문법 오류입니다.",e.toString());
+            }
             resultStr = e.cause.toString()
             ResponseDTO("E01",resultStr,"")
         }
