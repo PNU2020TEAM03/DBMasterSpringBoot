@@ -24,6 +24,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.30 비밀번호 수정 api 추가, 테이블 Join api 추가
 * 2020.06.01 특정 칼럼 기준 정렬 api 추가
 * 2020.06.07 특정 테이블 외래키 추가 api 추가
+* 2020.06.13 회원가입 api 에러코드 수정,
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -70,13 +71,47 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
     "value": ""
     }
 
->error
+>error E01 아이디 중복
 
     {
-    "result": "E01",
-    "message": "java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'test123' for key 'PRIMARY'",
+        "result": "E01",
+        "message": "test 은 아이디로 사용하실 수 없습니다.",
+        "value": ""
+    }
+    
+>error E02 아이디 미입력
+
+    {
+    "result": "E02",
+    "message": "아이디가 입력되지 않았습니다.",
     "value": ""
     }
+    
+>error E03 비밀번호 미입력
+
+    {
+    "result": "E03",
+    "message": "비밀번호가 입력되지 않았습니다.",
+    "value": ""
+    }
+    
+>error E04 SQL 문법 오류
+    
+    {
+        "result": "E04",
+        "message": "SQL 문법 오류입니다. 특수문자를 사용하지 마세요.",
+        "value": ""
+    }
+    
+>error E05 확인되지 않는 SQL 오류
+    
+    {
+        "result": "E05",
+        "message": "확인되지 않은 SQL 오류입니다.",
+        "value": ""
+    }
+
+>error E03 비밀번호 미입력
 
 ----
 ## 아이디 중복검사 api
