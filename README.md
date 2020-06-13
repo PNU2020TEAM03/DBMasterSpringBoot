@@ -24,7 +24,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.30 비밀번호 수정 api 추가, 테이블 Join api 추가
 * 2020.06.01 특정 칼럼 기준 정렬 api 추가
 * 2020.06.07 특정 테이블 외래키 추가 api 추가
-* 2020.06.13 회원가입 api 에러코드 수정, INSERT api 에러코드 수정, 테이블 데이터 전부 불러오기 수정
+* 2020.06.13 회원가입 api 에러코드 수정, INSERT api 에러코드 수정, 테이블 데이터 전부 불러오기 에러코드 수정, 칼럼 업데이트 에러콛드 수정
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -488,9 +488,44 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 >error
 
     {
-    "result": "E01",
-    "message": "java.sql.SQLSyntaxErrorException: Unknown column '업데이트적용' in 'field list'",
-    "value": ""
+        "result": "E01",
+        "message": "데이터 베이스 이름을 입력하지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E02",
+        "message": "테이블 이름을 입력하지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E03",
+        "message": "Primary Key를 입력하지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E04",
+        "message": "Primary Key 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E05",
+        "message": "업데이트할 column 이름이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E06",
+        "message": "업데이트할 column의 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E07",
+        "message": "테이블이 존재하지 않습니다.",
+        "value": ""
+    }
+    {
+        "result": "E08",
+        "message": "SQL 문법 오류입니다.",
+        "value": "org.springframework.jdbc.BadSqlGrammarException: StatementCallback; bad SQL grammar [UPDATE test!.tableA SET name = 업데이트적용 WHERE sno = 1;]; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '!.tableA SET name = 업데이트적용 WHERE sno = 1' at line 1"
     }
     
     ----
