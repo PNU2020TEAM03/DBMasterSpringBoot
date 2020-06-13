@@ -5,6 +5,7 @@ import com.example.dbmasterspringboot.data.dto.TableColumnDTO
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.lang.Exception
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
@@ -25,8 +26,11 @@ class GetTableListController {
         val name = response["name"]
         val tableName = response["tableName"]
 
-        if (name == null || tableName == null) {
-            return ResponseDTO("E01","파라미터가 잘못 설정됬습니다. tableName, name","")
+        if (name == null || name == "") {
+            return ResponseDTO("E01","데이터 베이스이름 입력하지 않았습니다.","")
+        }
+        if (tableName == null || tableName == "") {
+            return ResponseDTO("E02","테이블 이름을 입력하지 않았습니다.","")
         }
         //디비 커넥션 준비
         var url: String? = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true"
@@ -66,8 +70,6 @@ class GetTableListController {
                 val isNullable = columns.getString("IS_NULLABLE")
                 val is_autoIncrment = columns.getString("IS_AUTOINCREMENT")
 
-
-
                 when (datatype) {
                     "1" -> datatype = "VARCHAR"
                     "4" -> datatype = "INTEGER"
@@ -84,8 +86,6 @@ class GetTableListController {
                         print("UNKOWN")
                     }
                 }
-
-
 
                 if(columnName.equals(primayKey)){
                     val tableColumnDTO = TableColumnDTO("Y",columnName,datatype,columnsize)
@@ -105,12 +105,15 @@ class GetTableListController {
             println("Disconnected From DB ..........")
             println(resultArrayList)
             if(resultArrayList.size == 0){
-                return ResponseDTO("E01","정보가 없습니다.",resultArrayList)
+                return ResponseDTO("E03","정보가 없습니다.",resultArrayList)
             }
             print(ResponseDTO("S01","",resultArrayList))
             return ResponseDTO("S01","",resultArrayList)
 
-        } catch (e: SQLException) {
+        } catch (e: Exception) {
+            if(e.message!!.contains("SQLIntegrityConstraintViolationException")){
+                return ResponseDTO("E04","$","");
+            }
             System.err.print("SQLException : " + e.message)
             return ResponseDTO("E01",e.toString(),"")
         }
@@ -125,9 +128,10 @@ class GetTableListController {
         val name = response["name"]
         val pw = response["pw"]
 
-        if (name == null) {
-            return ResponseDTO("E01","파라미터가 잘못 설정됬습니다. tableName, name","")
+        if (name == null || name == "") {
+            return ResponseDTO("E01","데이터 베이스이름 입력하지 않았습니다.","")
         }
+
 
         //디비 커넥션 준비
         var url: String? = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true"

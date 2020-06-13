@@ -27,9 +27,13 @@ class SelectColumnController(
         val name = response["name"]
         val tableName = response["tableName"]
 
-        if (name == null || tableName == null) {
-            return ResponseDTO("E01", "파라미터가 잘못 설정됬습니다. tableName, name", "")
+        if (name == null || name == "") {
+            return ResponseDTO("E01","데이터 베이스이름 입력하지 않았습니다.","")
         }
+        if (tableName == null || tableName == "") {
+            return ResponseDTO("E02","테이블 이름을 입력하지 않았습니다.","")
+        }
+
         //디비 커넥션 준비
         var url: String? = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true"
         var con: Connection? = null
@@ -68,8 +72,14 @@ class SelectColumnController(
                         }
                     }
                 }
-            } catch (e: SQLException) {
-                return ResponseDTO("E02", e.toString(), null)
+            } catch (e: Exception) {
+                if(e.message!!.contains("doesn't exist")){
+                    return ResponseDTO("E03","테이블이 존재하지 않습니다.","");
+                }
+                if(e.message!!.contains("You have an error in your SQL syntax")){
+                    return ResponseDTO("E04","SQL 문법 오류입니다.",e.toString());
+                }
+                return ResponseDTO("E05", e.toString(), null)
             }
             pstmt.close()
             con.close()
