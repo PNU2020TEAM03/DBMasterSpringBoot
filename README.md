@@ -44,7 +44,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * [사용자 이메일 인증 확인 API](#사용자-이메일-인증-확인-api)
 * [테이블 내 데이터 검색 API](#테이블-내-데이터-검색-api)
 * [사용자 지정 SELECT 쿼리문 API](#사용자-지정-select-쿼리문-api)
-* [테이블 데이터 csv 파일로 export API](#테이블-데이터-csv-파이로-export-api)
+* [테이블 데이터 csv 파일로 export API](#테이블-데이터-csv-파일로-export-api)
 * [비밀번호 수정 API](#비밀번호-수정-api)
 * [테이블 JOIN API](#테이블-join-api)
 * [특정 칼럼 기준 정렬 API](#특정-칼럼-기준-정렬-api)
