@@ -24,9 +24,18 @@ class SearchTableController(
         val tableName = response["tableName"]
         val keyword = response["keyword"].toString()
 
-        if (name == null || tableName == null || keyword == null  ) {
-            return ResponseDTO("E01", "파라미터가 잘못 설정됬습니다. tableName, name, keyword, columnName", "")
+
+        if (name == null || name == "") {
+            return ResponseDTO("E01","name 값이 입력되지 않았습니다.","")
         }
+        if (tableName == null || tableName == "") {
+            return ResponseDTO("E02","tableName 값이 입력되지 않았습니다.","")
+        }
+        if (keyword == null || keyword == "") {
+            return ResponseDTO("E03","keyword 값이 입력되지 않았습니다.","")
+        }
+
+
         //디비 커넥션 준비
         var url: String? = "jdbc:mysql://54.180.95.198:5536/dbmaster_master?serverTimezone=UTC&useSSL=true"
         var con: Connection? = null
@@ -74,8 +83,11 @@ class SearchTableController(
                         }
                     }
                 }
-            } catch (e: SQLException) {
-                return ResponseDTO("E02", e.toString(), null)
+            } catch (e: Exception) {
+                if(e.message!!.contains("doesn't exist")){
+                    return ResponseDTO("E04","테이블 또는 데이터베이스가 존재하지 않습니다.","");
+                }
+                return ResponseDTO("E05", e.toString(), null)
             }
             pstmt.close()
             con.close()
@@ -84,7 +96,7 @@ class SearchTableController(
 
         } catch (e: SQLException) {
             System.err.print("SQLException : " + e.message)
-            return ResponseDTO("E01", e.toString(), "")
+            return ResponseDTO("E06", e.toString(), "")
         }
     }
 
