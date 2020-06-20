@@ -686,9 +686,31 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 
     {
     "result": "E01",
-    "message": "java.sql.SQLSyntaxErrorException: Table 'test.test2Table' doesn't exist",
+    "message": "tableName 값이 입력되지 않았습니다.",
     "value": ""
     }
+    {
+        "result": "E02",
+        "message": "name 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E03",
+        "message": "newName 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E04",
+        "message": "테이블 또는 데이터베이스가 존재하지 않습니다.",
+        "value": ""
+    }
+    {
+        "result": "E05",
+        "message": "java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1",
+        "value": ""
+    }
+    
+    
     
  ---
  ## 테이블 이름 중복검사 api
