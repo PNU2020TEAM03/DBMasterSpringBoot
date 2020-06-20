@@ -640,12 +640,7 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
         "value": ""
     }
     {
-        "result": "E02",
-        "message": "name 값이 입력되지 않았습니다.",
-        "value": ""
-    }
-    {
-    "result": "E04",
+    "result": "E03",
     "message": "java.sql.SQLSyntaxErrorException: Unknown table 'DropTableTesttingHolyShitWhattheFuck'",
     "value": ""
     }
