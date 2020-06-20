@@ -623,14 +623,29 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 
     {
     "result": "S01",
-    "message": "",
+    "message": "테이블이 삭제되었습니다.",
     "value": ""
     }
 
 >error
 
     {
-    "result": "E01",
+        "result": "E01",
+        "message": "tableName 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E02",
+        "message": "name 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E02",
+        "message": "name 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+    "result": "E04",
     "message": "java.sql.SQLSyntaxErrorException: Unknown table 'DropTableTesttingHolyShitWhattheFuck'",
     "value": ""
     }
