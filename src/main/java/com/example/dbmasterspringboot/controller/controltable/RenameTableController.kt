@@ -24,8 +24,14 @@ class RenameTableController(
         val name = response["name"]
         val newName = response["newName"]
 
-        if (tableName == null  || name == null) {
-            return ResponseDTO("E01","파라미터가 잘못 설정됬습니다.","")
+        if (tableName == null || tableName == "") {
+            return ResponseDTO("E01","tableName 값이 입력되지 않았습니다.","")
+        }
+        if (name == null || name == "") {
+            return ResponseDTO("E02","name 값이 입력되지 않았습니다.","")
+        }
+        if (newName == null || newName == "") {
+            return ResponseDTO("E03","newName 값이 입력되지 않았습니다.","")
         }
         return try {
             val RENAME_TABLE_QUERY = "ALTER TABLE $name.$tableName RENAME $name.$newName;"
@@ -34,8 +40,11 @@ class RenameTableController(
             ResponseDTO("S01","","")
 
         } catch (e: Exception) {
+            if(e.message!!.contains("doesn't exist")){
+                return ResponseDTO("E04","테이블 또는 데이터베이스가 존재하지 않습니다.","");
+            }
             resultStr = e.cause.toString()
-            ResponseDTO("E01",resultStr,"")
+            ResponseDTO("E05",resultStr,"")
         }
     }
 
