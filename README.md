@@ -24,7 +24,8 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 * 2020.05.30 비밀번호 수정 api 추가, 테이블 Join api 추가
 * 2020.06.01 특정 칼럼 기준 정렬 api 추가
 * 2020.06.07 특정 테이블 외래키 추가 api 추가
-* 2020.06.13 회원가입 api 에러코드 수정, INSERT api 에러코드 수정, 테이블 데이터 전부 불러오기 에러코드 수정, 칼럼 업데이트 에러콛드 수정
+* 2020.06.13 회원가입 api 에러코드 수정, INSERT api 에러코드 수정, 테이블 데이터 전부 불러오기 에러코드 수정, 칼럼 업데이트 에러코드 수정
+* 2020.06.20 테이블 데이터 delete 응답코드 추가, 테이블 DROP 응답코드 추가, Rename API 응답코드 추가
 ----
 ## 목차
 * [회원가입 api](#회원가입-api)
@@ -557,18 +558,45 @@ see [postman link](https://documenter.getpostman.com/view/5249380/Szmcaz3f?versi
 >response
 
     {
-    "result": "S01",
-    "message": "",
-    "value": ""
+        "result": "S01",
+        "message": "삭제되었습니다.",
+        "value": ""
     }
 
 >error
 
     {
-    "result": "E01",
-    "message": "java.sql.SQLSyntaxErrorException: Unknown column 'sno3' in 'where clause'",
-    "value": ""
+        "result": "E01",
+        "message": "tableName 값이 입력되지 않았습니다.",
+        "value": ""
     }
+    {
+        "result": "E02",
+        "message": "name 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E03",
+        "message": "primary_key_name 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E04",
+        "message": "primary_key_value 값이 입력되지 않았습니다.",
+        "value": ""
+    }
+    {
+        "result": "E05",
+        "message": "테이블이 존재하지 않습니다.",
+        "value": ""
+    }
+    {
+        "result": "E06",
+        "message": "칼럼이 존재하지 않습니다.",
+        "value": ""
+    }
+    
+    
 ----
 
 ## 테이블 DROP api
