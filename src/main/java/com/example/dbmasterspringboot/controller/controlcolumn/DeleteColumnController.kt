@@ -28,10 +28,6 @@ class DeleteColumnController(
         val tableName = response["tableName"]
 
 
-        if (tableName == null || name == null || primary_key_name == null || primary_key_value == null) {
-            return ResponseDTO("E01","파라미터가 잘못 설정됬습니다.","")
-        }
-
         if (tableName == null || tableName == "") {
             return ResponseDTO("E01","tableName 값이 입력되지 않았습니다.","")
         }

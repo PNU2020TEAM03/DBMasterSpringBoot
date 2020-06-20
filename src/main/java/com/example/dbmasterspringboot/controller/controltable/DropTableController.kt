@@ -21,12 +21,14 @@ class DropTableController(
             @RequestBody response: HashMap<String, String>
     ): ResponseDTO {
         var resultStr = "failed"
-        val currentTime = LocalDate.now()
         val tableName = response["tableName"]
         val name = response["name"]
 
-        if (tableName == null || name == null) {
-            return ResponseDTO("E01","파라미터가 잘못 설정됬습니다.","")
+        if (tableName == null || tableName == "") {
+            return ResponseDTO("E01","tableName 값이 입력되지 않았습니다.","")
+        }
+        if (name == null || name == "") {
+            return ResponseDTO("E02","name 값이 입력되지 않았습니다.","")
         }
         //fielddInfo = sno int(11) NOT NULL, name char(10) DEFAULT NULL, PRIMARY KEY (sno)
 
@@ -34,11 +36,14 @@ class DropTableController(
             val DROP_TABLE_QUERY = "DROP TABLE $name.$tableName;"
             println(DROP_TABLE_QUERY)
             jdbcTemplate.execute(DROP_TABLE_QUERY)
-            ResponseDTO("S01","","")
+            ResponseDTO("S01","테이블이 삭제되었습니다.","")
 
         } catch (e: Exception) {
+            if(e.message!!.contains("Unknown table")){
+                return ResponseDTO("E03","테이블 또는 데이터베이스가 존재하지 않습니다.","");
+            }
             resultStr = e.cause.toString()
-            ResponseDTO("E01",resultStr,"")
+            ResponseDTO("E04",resultStr,"")
         }
     }
 
