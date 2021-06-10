@@ -65,5 +65,3 @@ class DeleteColumnController(
 //        "insert" : "8, '테스트'"
 //    }
 }
-
-
